@@ -1,0 +1,12 @@
+﻿{
+  "name": "agri-disease-observation-ui",
+  "version": "1.0.0",
+  "description": "Farmer-friendly disease observation and expert escalation frontend interface",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "python ../run_server.py"
+  },
+  "keywords": ["agriculture", "disease-observation", "triage", "expert-escalation"],
+  "author": "Agricultural Extension Team",
+  "license": "MIT"
+}

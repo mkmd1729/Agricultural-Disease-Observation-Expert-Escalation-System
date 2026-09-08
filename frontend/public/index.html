@@ -1,0 +1,622 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agricultural Disease Observation & Expert Escalation System</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">🌱</div>
+        <div class="logo-title">
+          <h1>AgriObservation & Escalation</h1>
+          <p>Review 1 MVP — Standardized Disease Reporting & Rapid Expert Triage</p>
+        </div>
+      </div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="view-farmer">🌾 Farmer Report</button>
+        <button class="nav-tab" data-view="view-officer">📊 Officer Dashboard</button>
+        <button class="nav-tab" data-view="view-expert">🔬 Expert Station</button>
+        <button class="nav-tab" data-view="view-edge-cases">⚡ Edge Cases</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- =========================================================================
+         VIEW 1: FARMER REPORTING MODULE (5-STEP WIZARD)
+         ========================================================================= -->
+    <section id="view-farmer" class="view-panel active">
+      <div class="card">
+        <div class="card-title">
+          <span>🌾 Report Crop Disease Symptoms (Standardized Observation)</span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">
+          Submit early crop symptoms in 5 simple steps. Your report helps agricultural experts identify issues and recommend targeted actions quickly.
+        </p>
+
+        <!-- Progress Indicator -->
+        <div class="wizard-progress">
+          <div class="progress-step active" id="p-step-1">1</div>
+          <div class="progress-step" id="p-step-2">2</div>
+          <div class="progress-step" id="p-step-3">3</div>
+          <div class="progress-step" id="p-step-4">4</div>
+          <div class="progress-step" id="p-step-5">5</div>
+        </div>
+
+        <!-- STEP 1: SELECT CROP -->
+        <div class="step-container active" id="step-content-1">
+          <h3 style="margin-bottom:0.5rem; color:var(--primary-dark);">Step 1 of 5: Select your crop</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Choose the crop you are currently inspecting:</p>
+
+          <div class="crop-grid">
+            <div class="crop-card" data-crop="Tomato">
+              <div class="crop-card-icon">🍅</div>
+              <div>Tomato</div>
+            </div>
+            <div class="crop-card" data-crop="Maize">
+              <div class="crop-card-icon">🌽</div>
+              <div>Maize / Corn</div>
+            </div>
+            <div class="crop-card" data-crop="Rice">
+              <div class="crop-card-icon">🌾</div>
+              <div>Rice / Paddy</div>
+            </div>
+            <div class="crop-card" data-crop="Potato">
+              <div class="crop-card-icon">🥔</div>
+              <div>Potato</div>
+            </div>
+            <div class="crop-card" data-crop="Wheat">
+              <div class="crop-card-icon">🍞</div>
+              <div>Wheat</div>
+            </div>
+            <div class="crop-card" data-crop="Cassava">
+              <div class="crop-card-icon">🌿</div>
+              <div>Cassava</div>
+            </div>
+            <div class="crop-card" data-crop="Soybean">
+              <div class="crop-card-icon">🌱</div>
+              <div>Soybean</div>
+            </div>
+          </div>
+
+          <div class="form-group" style="max-width:320px; margin-top:1rem;">
+            <label class="form-label">Crop Variety (Optional):</label>
+            <input type="text" class="form-control" id="input-variety" placeholder="e.g. Roma VF, Basmati 370">
+          </div>
+
+          <div class="wizard-footer">
+            <div></div>
+            <button class="btn btn-primary" id="btn-step1-next" disabled onclick="FarmerWizard.nextStep()">
+              Next: What do you see? →
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: WHAT DO YOU SEE? (SYMPTOMS) -->
+        <div class="step-container" id="step-content-2">
+          <h3 style="margin-bottom:0.5rem; color:var(--primary-dark);">Step 2 of 5: What symptoms do you see?</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Tap all symptoms observed on the crop foliage or stem:</p>
+
+          <div class="symptom-grid">
+            <div class="symptom-card" data-symptom="leaf_spots">
+              <div class="symptom-icon">🍂</div>
+              <div>
+                <strong>Leaf Spots</strong>
+                <div style="font-size:0.8rem; color:#757575;">Brown/black spots, yellow halos</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="yellowing_chlorosis">
+              <div class="symptom-icon">🟡</div>
+              <div>
+                <strong>Yellowing / Chlorosis</strong>
+                <div style="font-size:0.8rem; color:#757575;">Leaves losing green color</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="wilting">
+              <div class="symptom-icon">🥀</div>
+              <div>
+                <strong>Wilting</strong>
+                <div style="font-size:0.8rem; color:#757575;">Plant drooping or collapsed</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="powdery_coating">
+              <div class="symptom-icon">⚪</div>
+              <div>
+                <strong>Powdery Coating</strong>
+                <div style="font-size:0.8rem; color:#757575;">White dust on leaf surface</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="water_soaked_lesions">
+              <div class="symptom-icon">💧</div>
+              <div>
+                <strong>Water-Soaked Lesions</strong>
+                <div style="font-size:0.8rem; color:#757575;">Dark, wet, greasy-looking patches</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="rust_pustules">
+              <div class="symptom-icon">🟠</div>
+              <div>
+                <strong>Rust Pustules</strong>
+                <div style="font-size:0.8rem; color:#757575;">Orange-red powdery blisters</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="mosaic_pattern">
+              <div class="symptom-icon">🧩</div>
+              <div>
+                <strong>Mosaic Mottle</strong>
+                <div style="font-size:0.8rem; color:#757575;">Marbled dark & light green patches</div>
+              </div>
+            </div>
+            <div class="symptom-card" data-symptom="healthy">
+              <div class="symptom-icon">🟢</div>
+              <div>
+                <strong>No Visible Disease</strong>
+                <div style="font-size:0.8rem; color:#757575;">Routine check - crop looks healthy</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin-top:1.25rem;">
+            <div class="form-group">
+              <label class="form-label">Symptom Severity:</label>
+              <div style="display:flex; gap:0.5rem;">
+                <button type="button" class="btn btn-outline severity-btn" data-severity="Low">Low</button>
+                <button type="button" class="btn btn-outline severity-btn selected" data-severity="Medium">Medium</button>
+                <button type="button" class="btn btn-outline severity-btn" data-severity="Severe">Severe</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">When did you first notice this?</label>
+              <input type="date" class="form-control" id="input-first-date" value="2026-09-06">
+            </div>
+          </div>
+
+          <div class="wizard-footer">
+            <button class="btn btn-secondary" onclick="FarmerWizard.prevStep()">← Back</button>
+            <button class="btn btn-primary" id="btn-step2-next" disabled onclick="FarmerWizard.nextStep()">
+              Next: Take Photos →
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: TAKE PHOTOS (VISUAL GUIDANCE) -->
+        <div class="step-container" id="step-content-3">
+          <h3 style="margin-bottom:0.5rem; color:var(--primary-dark);">Step 3 of 5: Upload or take crop photos</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Standardized photos allow experts to evaluate the condition accurately without repeated follow-up calls. Follow the visual guidance below:
+          </p>
+
+          <div class="guidance-row">
+            <!-- Photo 1: Whole plant -->
+            <div class="guidance-card">
+              <div class="guidance-img-wrap">
+                <img src="/guidance/photo1_whole_plant.jpg" alt="Whole plant guide">
+              </div>
+              <div class="guidance-body">
+                <div>
+                  <h4>Photo 1 — Whole Plant</h4>
+                  <p>Step back 1–2 meters. Capture the entire plant from soil level to canopy.</p>
+                </div>
+                <div>
+                  <input type="file" id="input-img-whole" accept="image/*" class="form-control" style="font-size:0.85rem; padding:0.4rem;">
+                  <div id="quality-whole" class="quality-feedback-box" style="display:none;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photo 2: Affected area -->
+            <div class="guidance-card">
+              <div class="guidance-img-wrap">
+                <img src="/guidance/photo2_affected_area.jpg" alt="Affected area guide">
+              </div>
+              <div class="guidance-body">
+                <div>
+                  <h4>Photo 2 — Affected Area</h4>
+                  <p>Hold camera 30–50 cm away. Focus on the infected branch or clustered leaves.</p>
+                </div>
+                <div>
+                  <input type="file" id="input-img-affected" accept="image/*" class="form-control" style="font-size:0.85rem; padding:0.4rem;">
+                  <div id="quality-affected" class="quality-feedback-box" style="display:none;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Photo 3: Leaf detail -->
+            <div class="guidance-card">
+              <div class="guidance-img-wrap">
+                <img src="/guidance/photo3_leaf_detail.jpg" alt="Leaf detail guide">
+              </div>
+              <div class="guidance-body">
+                <div>
+                  <h4>Photo 3 — Close-up Detail (Optional)</h4>
+                  <p>Clear close-up (10–15 cm) showing spot texture, margins, or vein discolorations.</p>
+                </div>
+                <div>
+                  <input type="file" id="input-img-detail" accept="image/*" class="form-control" style="font-size:0.85rem; padding:0.4rem;">
+                  <div id="quality-detail" class="quality-feedback-box" style="display:none;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info" style="font-size:0.85rem;">
+            <strong>Privacy Protection:</strong> Photographs should focus exclusively on crops, leaves, stems, and soil. Never photograph people, faces, vehicles, or personal documents.
+          </div>
+
+          <div class="wizard-footer">
+            <button class="btn btn-secondary" onclick="FarmerWizard.prevStep()">← Back</button>
+            <button class="btn btn-primary" onclick="FarmerWizard.nextStep()">
+              Next: Location & Growth Stage →
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: LOCATION & GROWTH STAGE -->
+        <div class="step-container" id="step-content-4">
+          <h3 style="margin-bottom:0.5rem; color:var(--primary-dark);">Step 4 of 5: Crop growth stage & general location</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Help experts understand the vulnerable stage of the crop and the regional microclimate.
+          </p>
+
+          <div class="form-group" style="margin-top:1.25rem;">
+            <label class="form-label">Crop Growth Stage:</label>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+              <button type="button" class="btn btn-outline stage-btn" data-stage="Seedling">Seedling</button>
+              <button type="button" class="btn btn-outline stage-btn selected" data-stage="Vegetative">Vegetative</button>
+              <button type="button" class="btn btn-outline stage-btn" data-stage="Flowering">Flowering</button>
+              <button type="button" class="btn btn-outline stage-btn" data-stage="Fruiting">Fruiting</button>
+              <button type="button" class="btn btn-outline stage-btn" data-stage="Mature">Mature / Ripening</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">Village / Agricultural Region:</label>
+              <select class="form-control" id="select-location" onchange="FarmerWizard.data.location = this.value">
+                <option value="Green Valley District">Green Valley District (Sector 4)</option>
+                <option value="Delta Paddy Belt">Delta Paddy Belt (Administrative Block 2)</option>
+                <option value="Highland Agricultural Block">Highland Agricultural Block</option>
+                <option value="Eastern Dryland Sub-basin">Eastern Dryland Sub-basin</option>
+                <option value="Riverside Agro Zone">Riverside Agro Zone</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Approximate GPS Coordinates (Privacy-Preserved):</label>
+              <input type="text" class="form-control" value="11.25° N, 77.15° E (~1.1 km area)" readonly style="background:#eeeeee; color:#555;">
+              <small style="color:var(--text-muted);">Exact household coordinates are never collected or stored.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Additional Farmer Notes or Weather Observations (Optional):</label>
+            <textarea class="form-control" id="input-farmer-notes" rows="2" placeholder="e.g. Heavy rain 2 days ago; yellowing noticed mostly on lower leaves near wet soil."></textarea>
+          </div>
+
+          <div class="wizard-footer">
+            <button class="btn btn-secondary" onclick="FarmerWizard.prevStep()">← Back</button>
+            <button class="btn btn-primary" onclick="FarmerWizard.nextStep()">
+              Next: Review & Submit →
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 5: REVIEW & SUBMIT -->
+        <div class="step-container" id="step-content-5">
+          <h3 style="margin-bottom:0.5rem; color:var(--primary-dark);">Step 5 of 5: Review observation & submit</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Review your standardized observation summary before submitting for expert review.
+          </p>
+
+          <div id="review-summary-box" style="margin:1.25rem 0;"></div>
+
+          <div class="alert alert-warning" style="font-size:0.88rem;">
+            <strong>Notice on AI Assistance:</strong> When you submit, our system will generate an experimental preliminary candidate category to help prioritize the case. <em>This is NOT a confirmed diagnosis.</em> An agricultural extension expert will validate your case and provide tailored agronomic recommendations.
+          </div>
+
+          <div id="submission-result-box" style="display:none; margin-bottom:1.5rem;"></div>
+
+          <div class="wizard-footer">
+            <button class="btn btn-secondary" onclick="FarmerWizard.prevStep()">← Back</button>
+            <button class="btn btn-primary" id="btn-submit-case" onclick="FarmerWizard.submitObservation()">
+              Submit Observation for Expert Review ✓
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 2: EXTENSION OFFICER DASHBOARD
+         ========================================================================= -->
+    <section id="view-officer" class="view-panel">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+          <div class="card-title" style="margin:0;">
+            <span>📊 Extension Officer Triage Dashboard</span>
+          </div>
+          <button class="btn btn-outline" id="btn-refresh-dashboard" style="padding:0.4rem 0.8rem; font-size:0.85rem;">
+            🔄 Refresh Data
+          </button>
+        </div>
+
+        <!-- KPI Metrics Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <h3>Total Observations</h3>
+            <div class="kpi-value" id="kpi-total">-</div>
+            <div class="kpi-sub">Standardized case records</div>
+          </div>
+          <div class="kpi-card">
+            <h3>Pending Triage</h3>
+            <div class="kpi-value" id="kpi-pending" style="color:var(--accent);">-</div>
+            <div class="kpi-sub">Awaiting expert action</div>
+          </div>
+          <div class="kpi-card">
+            <h3>High Priority</h3>
+            <div class="kpi-value" id="kpi-high-priority" style="color:var(--danger);">-</div>
+            <div class="kpi-sub">Urgent / low-conf escalation</div>
+          </div>
+          <div class="kpi-card">
+            <h3>Expert Validated</h3>
+            <div class="kpi-value" id="kpi-validated" style="color:var(--primary);">-</div>
+            <div class="kpi-sub">Confirmed diagnoses</div>
+          </div>
+          <div class="kpi-card">
+            <h3>Low Confidence</h3>
+            <div class="kpi-value" id="kpi-low-conf" style="color:#d32f2f;">-</div>
+            <div class="kpi-sub">&lt; 60% confidence cases</div>
+          </div>
+          <div class="kpi-card">
+            <h3>Avg T_review</h3>
+            <div class="kpi-value" id="kpi-treview" style="color:#0288d1;">-</div>
+            <div class="kpi-sub">First symptom to expert review</div>
+          </div>
+        </div>
+
+        <!-- Charts Breakdown Section -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.25rem; margin-bottom:1.5rem;">
+          <div style="background:#f9fbf9; border:1px solid var(--border-color); border-radius:8px; padding:1.25rem;">
+            <h4 style="color:var(--primary-dark); margin-bottom:0.75rem;">Observations by Crop</h4>
+            <div id="chart-crop-breakdown">Loading crop distribution...</div>
+          </div>
+          <div style="background:#fdfcf9; border:1px solid var(--border-color); border-radius:8px; padding:1.25rem;">
+            <h4 style="color:var(--accent); margin-bottom:0.75rem;">Top Observed Symptoms</h4>
+            <div id="chart-symptom-breakdown">Loading symptom distribution...</div>
+          </div>
+        </div>
+
+        <!-- Before vs After Evaluation Table -->
+        <h4 style="color:var(--primary-dark); margin-bottom:0.5rem;">Baseline vs. MVP Performance Metrics</h4>
+        <div class="table-container" style="margin-bottom:1.5rem;">
+          <table>
+            <thead>
+              <tr>
+                <th>Evaluation Metric</th>
+                <th>Baseline Assumption</th>
+                <th>MVP Target</th>
+                <th>Measured Prototype Result</th>
+                <th>Classification</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-table-body">
+              <!-- Dynamically populated from /api/metrics/summary -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Filter Controls -->
+        <h4 style="color:var(--primary-dark); margin-bottom:0.75rem;">Field Case Triage Queue</h4>
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem; align-items:center;">
+          <select id="filter-status" class="form-control" style="max-width:180px; padding:0.5rem;">
+            <option value="">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="Under Review">Under Review</option>
+            <option value="More Information Required">Needs More Info</option>
+            <option value="Expert Validated">Expert Validated</option>
+          </select>
+          <select id="filter-priority" class="form-control" style="max-width:160px; padding:0.5rem;">
+            <option value="">All Priorities</option>
+            <option value="High">High Priority</option>
+            <option value="Medium">Medium Priority</option>
+            <option value="Low">Low Priority</option>
+          </select>
+          <input type="text" id="filter-crop" class="form-control" style="max-width:160px; padding:0.5rem;" placeholder="Filter by crop...">
+          <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.9rem; cursor:pointer;">
+            <input type="checkbox" id="filter-lowconf"> Low Confidence (&lt;60%) Only
+          </label>
+        </div>
+
+        <!-- Cases Table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Crop & Stage</th>
+                <th>Location</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>AI Proposal</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="cases-table-body">
+              <tr><td colspan="7" style="text-align:center; padding:2rem;">Loading cases...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 3: EXPERT VALIDATION WORKSTATION
+         ========================================================================= -->
+    <section id="view-expert" class="view-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>🔬 Agricultural Expert Review & Validation Station</span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">
+          Inspect submitted evidence, compare against preliminary AI hypotheses, and apply authoritative expert diagnoses with actionable treatment advice.
+        </p>
+
+        <div style="display:grid; grid-template-columns:300px 1fr; gap:1.5rem;">
+          <!-- Queue Sidebar -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; overflow:hidden; background:#ffffff; height:fit-content;">
+            <div style="background:#f0f7f0; padding:0.75rem 1rem; font-weight:700; color:var(--primary-dark); border-bottom:1px solid var(--border-color);">
+              Cases Queue
+            </div>
+            <div id="expert-queue-list" style="max-height:600px; overflow-y:auto;">
+              <!-- Queue items dynamically loaded -->
+            </div>
+          </div>
+
+          <!-- Inspection & Validation Form -->
+          <div>
+            <div id="expert-inspection-panel" style="background:#ffffff; border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; margin-bottom:1.25rem;">
+              <p style="color:#757575;">Select a case from the queue on the left to inspect evidence.</p>
+            </div>
+
+            <!-- Authoritative Action Form -->
+            <div style="background:#fafafa; border:2px solid var(--primary-dark); border-radius:8px; padding:1.25rem;">
+              <h4 style="color:var(--primary-dark); margin-bottom:0.75rem;">Authoritative Expert Action</h4>
+              
+              <div id="expert-feedback-box" style="display:none; margin-bottom:1rem;"></div>
+
+              <form id="expert-review-form">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                  <div class="form-group">
+                    <label class="form-label">Validation Decision:</label>
+                    <select id="expert-action-select" class="form-control">
+                      <option value="confirmed">Confirm Observation / Diagnosis</option>
+                      <option value="rejected_ai">Reject / Override AI Suggestion</option>
+                      <option value="more_info_needed">Request More Information / Resubmission</option>
+                      <option value="uncertain">Mark as Uncertain (Needs Lab Test)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Urgency Level:</label>
+                    <select id="expert-urgency-select" class="form-control">
+                      <option value="Routine">Routine (Standard management)</option>
+                      <option value="Prompt" selected>Prompt (Action needed within 48h)</option>
+                      <option value="Urgent">Urgent (Imminent risk / Contagion)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Authoritative Expert Diagnosis / Category:</label>
+                  <input type="text" id="expert-diagnosis-input" class="form-control" placeholder="e.g. Early Blight (Alternaria solani)">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Expert Agronomic Recommendations & Feedback for Farmer:</label>
+                  <textarea id="expert-comments-input" class="form-control" rows="3" placeholder="Specify recommended cultural controls, dosage of approved bio-pesticide, or leaf removal instructions..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  Save Authoritative Expert Validation ✓
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 4: EDGE CASES SANDBOX
+         ========================================================================= -->
+    <section id="view-edge-cases" class="view-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>⚡ Interactive Edge Case Demonstrations (Section 17 & 18)</span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">
+          Review 1 requires demonstrating at least three specific edge and failure cases. Click below to execute and inspect the system response for each scenario:
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+          <!-- Card 1 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#e65100; margin-bottom:0.5rem;">Edge Case 1: Poor Image</h4>
+            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when a farmer uploads a blurry, severely underexposed, or low-contrast leaf photo.
+            </p>
+            <button class="btn btn-warning" style="width:100%; font-size:0.9rem;" onclick="EdgeCaseSandbox.runEdgeCase1()">
+              Run Edge Case 1 Test →
+            </button>
+          </div>
+
+          <!-- Card 2 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#0277bd; margin-bottom:0.5rem;">Edge Case 2: Low Confidence (&lt;60%)</h4>
+            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when the classifier confidence drops below 60%. System must refuse a diagnosis and escalate priority.
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.9rem; background:#0288d1;" onclick="EdgeCaseSandbox.runEdgeCase2()">
+              Run Edge Case 2 Test →
+            </button>
+          </div>
+
+          <!-- Card 3 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#2e7d32; margin-bottom:0.5rem;">Edge Case 3: Conflicting Validation</h4>
+            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when AI suggests Category A (e.g. salinity scorch) but the expert diagnoses Category B (e.g. nitrogen deficiency).
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.9rem;" onclick="EdgeCaseSandbox.runEdgeCase3()">
+              Run Edge Case 3 Test →
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Box -->
+        <div id="edge-case-result" style="margin-top:1.5rem;">
+          <p style="color:#757575; font-style:italic;">Click any test above to view live execution and evaluation results.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Detail Modal -->
+  <div id="case-detail-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="margin:0; color:var(--primary-dark);">Observation Inspection</h3>
+        <button class="close-btn" onclick="OfficerDashboard.closeModal()">&times;</button>
+      </div>
+      <div id="case-detail-content"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div style="max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <strong>Agri-Disease Observation & Expert Escalation System</strong> — Review 1 Prototype (~35% Scope).
+      </div>
+      <div>
+        <small style="color:#757575;">Prototype/simulated evaluation — not field validation. No PII collected.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/farmer_wizard.js"></script>
+  <script src="/js/officer_dashboard.js"></script>
+  <script src="/js/expert_station.js"></script>
+  <script src="/js/edge_cases.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

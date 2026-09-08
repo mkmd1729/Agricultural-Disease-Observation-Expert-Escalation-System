@@ -1,0 +1,476 @@
+[
+  {
+    "case_id": "CASE-2026-001",
+    "anonymous_farmer_id": "FARMER-ANON-8812",
+    "crop": "Tomato",
+    "variety": "Roma VF",
+    "location": "Green Valley District, Sector 4",
+    "latitude": 11.24,
+    "longitude": 77.15,
+    "crop_stage": "Flowering",
+    "symptoms": "leaf_spots, yellowing_chlorosis",
+    "severity": "Severe",
+    "first_symptom_time": "2026-09-06T22:22:24.848717+00:00",
+    "submission_time": "2026-09-07T16:22:24.848748+00:00",
+    "ai_prediction": "Fungal-like symptom",
+    "ai_confidence": 74.0,
+    "ai_alternative": "Bacterial leaf spot",
+    "priority": "High",
+    "priority_reason": "Reported high symptom severity; Critical growth stage (flowering/fruiting)",
+    "status": "Under Review",
+    "farmer_notes": "Concentric rings observed on lower leaves. Spreading upward rapidly.",
+    "environmental_notes": "Heavy rains and high humidity over the past 3 days.",
+    "images": [
+      {
+        "id": "IMG-001-A",
+        "type": "affected_area",
+        "src": "REF-FUN-001.jpg",
+        "score": 88.0,
+        "warnings": [],
+        "advice": []
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-002",
+    "anonymous_farmer_id": "FARMER-ANON-3341",
+    "crop": "Tomato",
+    "variety": "Local Hybrid",
+    "location": "Riverside Agro Zone",
+    "latitude": 11.31,
+    "longitude": 77.08,
+    "crop_stage": "Fruiting",
+    "symptoms": "leaf_spots",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-07T10:22:24.848775+00:00",
+    "submission_time": "2026-09-08T02:22:24.848777+00:00",
+    "ai_prediction": "Fungal-like symptom",
+    "ai_confidence": 72.0,
+    "ai_alternative": "Bacterial leaf spot",
+    "priority": "Medium",
+    "priority_reason": "Standard routine triage; Critical growth stage",
+    "status": "Expert Validated",
+    "expert_validation": "Fungal leaf blight (Early blight - Alternaria solani)",
+    "expert_comments": "Classic Alternaria target-board concentric rings. Apply copper oxychloride or azoxystrobin spray. Remove lower infected leaves.",
+    "expert_review_time": "2026-09-08T08:22:24.848780+00:00",
+    "farmer_notes": "Small brown spots on tomato leaves.",
+    "images": [
+      {
+        "id": "IMG-002-A",
+        "type": "leaf_detail",
+        "src": "REF-FUN-001.jpg",
+        "score": 92.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-002",
+        "expert_category": "Fungal",
+        "status": "confirmed",
+        "comments": "Confirmed early blight. Clear concentric lesions.",
+        "urgency": "Prompt",
+        "time": "2026-09-08T08:22:24.848787+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-003",
+    "anonymous_farmer_id": "FARMER-ANON-9014",
+    "crop": "Potato",
+    "variety": "Kufri Jyoti",
+    "location": "Highland Agricultural Block",
+    "latitude": 11.45,
+    "longitude": 76.92,
+    "crop_stage": "Vegetative",
+    "symptoms": "leaf_spots",
+    "severity": "Low",
+    "first_symptom_time": "2026-09-06T10:22:24.848795+00:00",
+    "submission_time": "2026-09-07T22:22:24.848797+00:00",
+    "ai_prediction": "Fungal-like symptom",
+    "ai_confidence": 58.0,
+    "ai_alternative": "Unclassified foliar symptom",
+    "priority": "High",
+    "priority_reason": "Low AI confidence (58.0% < 60%) \u2014 urgent expert escalation required; Image quality degraded",
+    "status": "Submitted",
+    "farmer_notes": "Camera shook while taking photo in the field.",
+    "images": [
+      {
+        "id": "IMG-003-A",
+        "type": "leaf_detail",
+        "src": "edge_case_blurry.jpg",
+        "score": 20.0,
+        "warnings": [
+          "Image may be blurry",
+          "Image may be underexposed"
+        ],
+        "advice": [
+          "Hold the phone steady and take another photo.",
+          "Move to better lighting."
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-004",
+    "anonymous_farmer_id": "FARMER-ANON-5521",
+    "crop": "Rice",
+    "variety": "Basmati 370",
+    "location": "Delta Paddy Belt",
+    "latitude": 10.78,
+    "longitude": 79.14,
+    "crop_stage": "Seedling",
+    "symptoms": "wilting, stunting",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-07T16:22:24.848805+00:00",
+    "submission_time": "2026-09-08T04:22:24.848826+00:00",
+    "ai_prediction": "Wilting symptom (Water stress or vascular pathogen)",
+    "ai_confidence": 51.0,
+    "ai_alternative": "Bacterial wilt",
+    "priority": "High",
+    "priority_reason": "Low AI confidence (51.0% < 60%) \u2014 urgent expert escalation required; Early seedling vulnerability",
+    "status": "Submitted",
+    "farmer_notes": "Seedlings suddenly drooping in corner of seedbed.",
+    "environmental_notes": "Standing water after sudden cloudburst.",
+    "images": [
+      {
+        "id": "IMG-004-A",
+        "type": "whole_plant",
+        "src": "REF-HEA-003.jpg",
+        "score": 85.0,
+        "warnings": [],
+        "advice": []
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-005",
+    "anonymous_farmer_id": "FARMER-ANON-7712",
+    "crop": "Maize",
+    "variety": "Pioneer Hybrid",
+    "location": "Eastern Dryland Sub-basin",
+    "latitude": 11.12,
+    "longitude": 77.4,
+    "crop_stage": "Vegetative",
+    "symptoms": "yellowing_chlorosis, tip_burn",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-05T10:22:24.848834+00:00",
+    "submission_time": "2026-09-07T20:22:24.848837+00:00",
+    "ai_prediction": "Abiotic stress (Salinity/heat scorch)",
+    "ai_confidence": 68.0,
+    "ai_alternative": "Potassium deficiency",
+    "priority": "Medium",
+    "priority_reason": "Standard routine triage",
+    "status": "Expert Validated",
+    "expert_validation": "Abiotic Nitrogen Deficiency (Not a biological disease)",
+    "expert_comments": "V-shaped chlorosis extending along midrib from tip inward is diagnostic for Nitrogen deficiency, not fungal blight. Apply top-dressing urea 25 kg/acre. No fungicide needed.",
+    "expert_review_time": "2026-09-08T06:22:24.848840+00:00",
+    "farmer_notes": "Lower maize leaves turning yellow in V-shape.",
+    "images": [
+      {
+        "id": "IMG-005-A",
+        "type": "affected_area",
+        "src": "REF-ABI-001.jpg",
+        "score": 90.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-005",
+        "expert_category": "Abiotic",
+        "status": "rejected_ai",
+        "comments": "AI predicted Salinity scorch; actual diagnosis is severe Nitrogen deficiency. Expert override applied.",
+        "urgency": "Routine",
+        "time": "2026-09-08T06:22:24.848846+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-006",
+    "anonymous_farmer_id": "FARMER-ANON-1082",
+    "crop": "Rice",
+    "variety": "IR64",
+    "location": "Delta Paddy Belt",
+    "latitude": 10.82,
+    "longitude": 79.2,
+    "crop_stage": "Tillering",
+    "symptoms": "water_soaked_lesions",
+    "severity": "Severe",
+    "first_symptom_time": "2026-09-06T18:22:24.848855+00:00",
+    "submission_time": "2026-09-07T18:22:24.848857+00:00",
+    "ai_prediction": "Bacterial-like symptom",
+    "ai_confidence": 76.0,
+    "ai_alternative": "Fungal leaf spot",
+    "priority": "High",
+    "priority_reason": "Reported high symptom severity; Symptom indicates potential rapid contagion/spread risk",
+    "status": "Expert Validated",
+    "expert_validation": "Bacterial Leaf Blight (Xanthomonas oryzae)",
+    "expert_comments": "Water-soaked stripes along leaf margins with bacterial ooze beads. Drain field water temporarily, avoid nitrogen fertilizer top-dressing.",
+    "expert_review_time": "2026-09-08T05:22:24.848859+00:00",
+    "farmer_notes": "Yellow-orange wavy margins starting from leaf tips.",
+    "images": [
+      {
+        "id": "IMG-006-A",
+        "type": "leaf_detail",
+        "src": "REF-BAC-002.jpg",
+        "score": 91.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-006",
+        "expert_category": "Bacterial",
+        "status": "confirmed",
+        "comments": "Confirmed Xanthomonas oryzae.",
+        "urgency": "Urgent",
+        "time": "2026-09-08T05:22:24.848868+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-007",
+    "anonymous_farmer_id": "FARMER-ANON-6643",
+    "crop": "Cassava",
+    "variety": "Local Cassava",
+    "location": "Southern Uplands",
+    "latitude": 9.95,
+    "longitude": 78.1,
+    "crop_stage": "Vegetative",
+    "symptoms": "mosaic_pattern, leaf_curling",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-04T10:22:24.848873+00:00",
+    "submission_time": "2026-09-07T14:22:24.848875+00:00",
+    "ai_prediction": "Viral-like symptom (Mosaic)",
+    "ai_confidence": 80.0,
+    "ai_alternative": "Genetic variegation / zinc deficiency",
+    "priority": "Medium",
+    "priority_reason": "Standard routine triage",
+    "status": "Expert Validated",
+    "expert_validation": "Cassava Mosaic Geminivirus (CMD)",
+    "expert_comments": "Severe mosaic mottled leaves and twisted growth. Whitefly vector transmitted. Rogue infected plants to protect neighboring crops.",
+    "expert_review_time": "2026-09-08T04:22:24.848877+00:00",
+    "farmer_notes": "Leaves showing mottled yellow-green patterns and curling.",
+    "images": [
+      {
+        "id": "IMG-007-A",
+        "type": "whole_plant",
+        "src": "REF-VIR-002.jpg",
+        "score": 86.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-007",
+        "expert_category": "Viral",
+        "status": "confirmed",
+        "comments": "Cassava mosaic confirmed. Rogueing advised.",
+        "urgency": "Prompt",
+        "time": "2026-09-08T04:22:24.848883+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-008",
+    "anonymous_farmer_id": "FARMER-ANON-4419",
+    "crop": "Wheat",
+    "variety": "HD 2967",
+    "location": "Northern Plains Block",
+    "latitude": 28.6,
+    "longitude": 77.2,
+    "crop_stage": "Tillering",
+    "symptoms": "healthy",
+    "severity": "Low",
+    "first_symptom_time": "2026-09-07T14:22:24.848888+00:00",
+    "submission_time": "2026-09-08T00:22:24.848890+00:00",
+    "ai_prediction": "Healthy crop appearance",
+    "ai_confidence": 88.0,
+    "ai_alternative": "Early-stage latent infection",
+    "priority": "Low",
+    "priority_reason": "Standard routine triage",
+    "status": "Expert Validated",
+    "expert_validation": "Healthy Crop - No Pathogen Detected",
+    "expert_comments": "Foliage shows vigorous green coloration and uniform tillering. No fungal pustules or rust noticed. Continue standard weed management.",
+    "expert_review_time": "2026-09-08T07:22:24.848892+00:00",
+    "farmer_notes": "Checking crop before second irrigation.",
+    "images": [
+      {
+        "id": "IMG-008-A",
+        "type": "whole_plant",
+        "src": "REF-HEA-002.jpg",
+        "score": 95.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-008",
+        "expert_category": "Healthy",
+        "status": "confirmed",
+        "comments": "Confirmed healthy stand.",
+        "urgency": "Routine",
+        "time": "2026-09-08T07:22:24.848898+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-009",
+    "anonymous_farmer_id": "FARMER-ANON-9901",
+    "crop": "Potato",
+    "variety": "Atlantic",
+    "location": "Highland Agricultural Block",
+    "latitude": 11.42,
+    "longitude": 76.88,
+    "crop_stage": "Flowering",
+    "symptoms": "wilting",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-07T04:22:24.848903+00:00",
+    "submission_time": "2026-09-07T19:22:24.848905+00:00",
+    "ai_prediction": "Wilting symptom (Water stress or vascular pathogen)",
+    "ai_confidence": 54.0,
+    "ai_alternative": "Bacterial wilt",
+    "priority": "High",
+    "priority_reason": "Low AI confidence (54.0% < 60%) \u2014 urgent expert escalation required; Critical growth stage",
+    "status": "More Information Required",
+    "expert_comments": "Please cut the lower stem at soil level and place in a glass of clear water. Report whether milky bacterial streaming oozes out.",
+    "expert_review_time": "2026-09-08T05:22:24.848907+00:00",
+    "farmer_notes": "Single plant wilting while neighboring plants look okay.",
+    "images": [
+      {
+        "id": "IMG-009-A",
+        "type": "affected_area",
+        "src": "REF-HEA-001.jpg",
+        "score": 82.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-009",
+        "expert_category": "Bacterial",
+        "status": "more_info_needed",
+        "comments": "Stem ooze test required to distinguish Ralstonia from Fusarium.",
+        "urgency": "Prompt",
+        "time": "2026-09-08T05:22:24.848913+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-010",
+    "anonymous_farmer_id": "FARMER-ANON-2209",
+    "crop": "Tomato",
+    "variety": "Pusa Ruby",
+    "location": "Green Valley District",
+    "latitude": 11.26,
+    "longitude": 77.12,
+    "crop_stage": "Fruiting",
+    "symptoms": "leaf_spots",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-06T10:22:24.848918+00:00",
+    "submission_time": "2026-09-08T02:22:24.848920+00:00",
+    "ai_prediction": "Fungal-like symptom",
+    "ai_confidence": 57.0,
+    "ai_alternative": "Unclassified foliar symptom",
+    "priority": "High",
+    "priority_reason": "Low AI confidence (57.0% < 60%) \u2014 urgent expert escalation required; Image quality degraded",
+    "status": "Submitted",
+    "farmer_notes": "Taken in evening dusk under canopy shade.",
+    "images": [
+      {
+        "id": "IMG-010-A",
+        "type": "leaf_detail",
+        "src": "edge_case_dark.jpg",
+        "score": 38.0,
+        "warnings": [
+          "Image is too dark (average brightness: 23.5 < 40)"
+        ],
+        "advice": [
+          "The photo is quite dark. Please take another photo in natural daylight or avoid heavy shadows."
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-011",
+    "anonymous_farmer_id": "FARMER-ANON-7788",
+    "crop": "Tomato",
+    "variety": "Cherry Tomato",
+    "location": "Suburban Greenhouse Cluster",
+    "latitude": 12.92,
+    "longitude": 77.58,
+    "crop_stage": "Flowering",
+    "symptoms": "powdery_coating",
+    "severity": "High",
+    "first_symptom_time": "2026-09-06T06:22:24.848927+00:00",
+    "submission_time": "2026-09-07T12:22:24.848929+00:00",
+    "ai_prediction": "Fungal-like symptom (Powdery mildew)",
+    "ai_confidence": 85.0,
+    "ai_alternative": "Abiotic dust/pesticide residue",
+    "priority": "High",
+    "priority_reason": "Reported high symptom severity; Critical growth stage (flowering/fruiting)",
+    "status": "Expert Validated",
+    "expert_validation": "Powdery Mildew (Oidium neolycopersici)",
+    "expert_comments": "White talcum-like fungal powder on upper leaf surfaces. Apply wettable sulfur 2g/L or potassium bicarbonate.",
+    "expert_review_time": "2026-09-08T00:22:24.848932+00:00",
+    "farmer_notes": "White powder spreading over leaves in greenhouse.",
+    "images": [
+      {
+        "id": "IMG-011-A",
+        "type": "leaf_detail",
+        "src": "REF-FUN-001.jpg",
+        "score": 89.0,
+        "warnings": [],
+        "advice": []
+      }
+    ],
+    "reviews": [
+      {
+        "id": "REV-011",
+        "expert_category": "Fungal",
+        "status": "confirmed",
+        "comments": "Confirmed greenhouse powdery mildew.",
+        "urgency": "Urgent",
+        "time": "2026-09-08T00:22:24.848938+00:00"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-2026-012",
+    "anonymous_farmer_id": "FARMER-ANON-1154",
+    "crop": "Rice",
+    "variety": "Swarna",
+    "location": "Delta Paddy Belt",
+    "latitude": 10.79,
+    "longitude": 79.16,
+    "crop_stage": "Tillering",
+    "symptoms": "rust_pustules, yellowing_chlorosis",
+    "severity": "Medium",
+    "first_symptom_time": "2026-09-05T22:22:24.848942+00:00",
+    "submission_time": "2026-09-07T10:22:24.848945+00:00",
+    "ai_prediction": "Fungal-like symptom (Rust)",
+    "ai_confidence": 82.0,
+    "ai_alternative": "Nutrient deficiency",
+    "priority": "Medium",
+    "priority_reason": "Symptom indicates potential rapid contagion/spread risk",
+    "status": "Under Review",
+    "farmer_notes": "Orange-brown pustules on leaf blades.\n[Resubmission update]: Added clear close-up of pustules scraping onto white paper as requested.",
+    "images": [
+      {
+        "id": "IMG-012-A",
+        "type": "affected_area",
+        "src": "REF-FUN-002.jpg",
+        "score": 93.0,
+        "warnings": [],
+        "advice": []
+      }
+    ]
+  }
+]
