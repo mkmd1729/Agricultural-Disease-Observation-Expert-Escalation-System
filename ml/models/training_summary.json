@@ -1,0 +1,124 @@
+{
+  "model_architecture": "MobileNetV3-Small",
+  "num_classes": 5,
+  "classes": [
+    "healthy",
+    "fungal",
+    "bacterial",
+    "viral",
+    "abiotic"
+  ],
+  "epochs": 15,
+  "best_epoch": 12,
+  "best_val_loss": 0.0007,
+  "total_training_time_seconds": 102.82,
+  "device": "cpu",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.2305,
+      "train_acc": 92.4,
+      "val_loss": 0.2195,
+      "val_acc": 90.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.0501,
+      "train_acc": 98.8,
+      "val_loss": 0.4023,
+      "val_acc": 80.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.2237,
+      "train_acc": 95.6,
+      "val_loss": 0.0025,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0228,
+      "train_acc": 99.6,
+      "val_loss": 0.0037,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0655,
+      "train_acc": 99.2,
+      "val_loss": 1.1295,
+      "val_acc": 80.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0814,
+      "train_acc": 98.0,
+      "val_loss": 0.6818,
+      "val_acc": 80.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.1988,
+      "train_acc": 96.8,
+      "val_loss": 0.3125,
+      "val_acc": 80.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0119,
+      "train_acc": 100.0,
+      "val_loss": 0.0045,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.2213,
+      "train_acc": 96.4,
+      "val_loss": 0.0019,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0716,
+      "train_acc": 98.4,
+      "val_loss": 0.0368,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0081,
+      "train_acc": 99.6,
+      "val_loss": 0.0018,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.1125,
+      "train_acc": 98.8,
+      "val_loss": 0.0007,
+      "val_acc": 100.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.1095,
+      "train_acc": 98.8,
+      "val_loss": 8.3092,
+      "val_acc": 70.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0062,
+      "train_acc": 100.0,
+      "val_loss": 2.6462,
+      "val_acc": 60.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.004,
+      "train_acc": 100.0,
+      "val_loss": 0.3609,
+      "val_acc": 90.0
+    }
+  ],
+  "disclaimer": "Trained on synthetic prototype benchmark dataset. Not validated for autonomous field deployment."
+}

@@ -1,0 +1,116 @@
+{
+  "evaluation_type": "Phase 2.1 Held-Out Test Evaluation",
+  "dataset_type": "prototype_benchmark_synthetic",
+  "total_test_samples": 15,
+  "overall_accuracy": 100.0,
+  "macro_precision": 100.0,
+  "macro_recall": 100.0,
+  "macro_f1": 100.0,
+  "weighted_f1": 100.0,
+  "per_class_metrics": {
+    "healthy": {
+      "support": 3,
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    },
+    "fungal": {
+      "support": 3,
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    },
+    "bacterial": {
+      "support": 3,
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    },
+    "viral": {
+      "support": 3,
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    },
+    "abiotic": {
+      "support": 3,
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      3,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      3
+    ]
+  ],
+  "class_names": [
+    "healthy",
+    "fungal",
+    "bacterial",
+    "viral",
+    "abiotic"
+  ],
+  "confidence_stats": {
+    "overall_mean": 100.0,
+    "correct_mean": 100.0,
+    "min_confidence": 99.89230036735535,
+    "max_confidence": 100.0
+  },
+  "latency_stats": {
+    "runtime_environment": "Windows 11 (AMD64), Python 3.12.10",
+    "device": "CPU",
+    "mean_ms": 11.4,
+    "min_ms": 8.45,
+    "max_ms": 20.61
+  },
+  "systematic_errors": [],
+  "disclaimer": "Prototype benchmark evaluation. Results reflect synthetic reference assets and are not field validated."
+}
