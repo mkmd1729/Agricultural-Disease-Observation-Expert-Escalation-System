@@ -1,7 +1,8 @@
-﻿"""
+"""
 Case Prioritization Engine for Agricultural Extension Triage.
 Implements decision-support priority scoring (High, Medium, Low).
 Note: This is a triage mechanism to speed up expert attention, not an agronomic diagnosis.
+Includes Phase 2.3 environmental and microclimate stress indicators.
 """
 
 from typing import Tuple, List, Optional
@@ -12,15 +13,19 @@ def calculate_priority_score(
     crop_stage: str,
     ai_confidence: Optional[float],
     symptoms: List[str],
-    environmental_notes: Optional[str] = None
+    environmental_notes: Optional[str] = None,
+    rainfall_recent: Optional[str] = None,
+    humidity_level: Optional[str] = None,
+    soil_moisture: Optional[str] = None,
+    recent_weather_event: Optional[str] = None
 ) -> Tuple[str, str]:
     """
-    Computes priority level and explanatory rationale based on triage factors.
+    Computes priority level and explanatory rationale based on multi-factor triage scoring.
     Returns: (priority_level: 'High' | 'Medium' | 'Low', reason_description: str)
     """
     score = 0
     reasons: List[str] = []
-    
+
     # 1. Symptom Severity Factor
     sev = severity.lower() if severity else "medium"
     if "severe" in sev or "critical" in sev or "high" in sev:
@@ -54,12 +59,25 @@ def calculate_priority_score(
         score += 2
         reasons.append("Symptom indicates potential rapid contagion/spread risk")
 
-    # 5. Environmental Stress Amplifiers
+    # 5. Environmental Stress Amplifiers (Phase 1 notes + Phase 2.3 structured context)
+    env_amplified = False
     if environmental_notes:
         env_lower = environmental_notes.lower()
         if any(w in env_lower for w in ["rain", "flood", "humid", "hail", "fog"]):
             score += 1
             reasons.append("Humid/wet conditions favoring pathogen proliferation")
+            env_amplified = True
+
+    if not env_amplified:
+        # Check structured environmental context
+        is_high_rain = (rainfall_recent or "").lower() == "high"
+        is_high_humid = (humidity_level or "").lower() == "high"
+        is_waterlogged = (soil_moisture or "").lower() in ["high", "waterlogged"]
+        has_severe_weather = (recent_weather_event or "").lower() in ["flood", "hailstorm", "heavy rain", "inundation"]
+
+        if is_high_rain or is_high_humid or is_waterlogged or has_severe_weather:
+            score += 1
+            reasons.append("Structured environmental context indicates elevated humidity/waterlogging risk")
 
     # Final mapping
     if score >= 6 or (ai_confidence is not None and ai_confidence < 60.0):

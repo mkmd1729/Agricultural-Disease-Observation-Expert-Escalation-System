@@ -1,10 +1,11 @@
-﻿"""
+"""
 Database initialization and session handling for Agricultural Disease Observation MVP.
 Uses SQLite for local zero-configuration reproducibility.
+Includes non-destructive additive migrations for Phase 2 schema extensions.
 """
 
 from pathlib import Path
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # Base directory paths
@@ -36,6 +37,24 @@ def get_db():
 
 
 def init_db():
-    """Creates database tables if they do not exist."""
+    """Creates database tables if they do not exist and applies additive migrations."""
     from backend.app import models  # noqa: F401
     Base.metadata.create_all(bind=engine)
+
+    # Phase 2.3 non-destructive schema migration: add environmental columns if missing
+    env_columns = [
+        ("rainfall_recent", "VARCHAR(32) DEFAULT 'Unknown'"),
+        ("humidity_level", "VARCHAR(32) DEFAULT 'Unknown'"),
+        ("temperature_band", "VARCHAR(32) DEFAULT 'Unknown'"),
+        ("recent_weather_event", "VARCHAR(64) DEFAULT 'None'"),
+        ("irrigation_status", "VARCHAR(32) DEFAULT 'Unknown'"),
+        ("soil_moisture_observation", "VARCHAR(32) DEFAULT 'Unknown'"),
+        ("field_condition", "VARCHAR(32) DEFAULT 'Unknown'")
+    ]
+    with engine.connect() as conn:
+        for col_name, col_def in env_columns:
+            try:
+                conn.execute(text(f"ALTER TABLE cases ADD COLUMN {col_name} {col_def}"))
+                conn.commit()
+            except Exception:
+                pass  # column already exists

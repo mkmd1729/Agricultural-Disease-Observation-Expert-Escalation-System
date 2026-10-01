@@ -1,6 +1,7 @@
-﻿"""
+"""
 Pydantic schemas for request validation and response serialization.
 Uses modern Pydantic v2 ConfigDict and robust field validators.
+Includes Phase 2.3 environmental context and Phase 2.5 tracking extensions.
 """
 
 from datetime import datetime
@@ -105,6 +106,15 @@ class CaseCreate(BaseModel):
     farmer_notes: Optional[str] = None
     environmental_notes: Optional[str] = None
 
+    # Phase 2.3 Environmental Context
+    rainfall_recent: Optional[str] = "Unknown"
+    humidity_level: Optional[str] = "Unknown"
+    temperature_band: Optional[str] = "Unknown"
+    recent_weather_event: Optional[str] = "None"
+    irrigation_status: Optional[str] = "Unknown"
+    soil_moisture_observation: Optional[str] = "Unknown"
+    field_condition: Optional[str] = "Unknown"
+
 
 class CaseOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -132,6 +142,16 @@ class CaseOut(BaseModel):
     expert_review_time: Optional[datetime]
     farmer_notes: Optional[str]
     environmental_notes: Optional[str]
+
+    # Phase 2.3 Environmental Context
+    rainfall_recent: Optional[str] = "Unknown"
+    humidity_level: Optional[str] = "Unknown"
+    temperature_band: Optional[str] = "Unknown"
+    recent_weather_event: Optional[str] = "None"
+    irrigation_status: Optional[str] = "Unknown"
+    soil_moisture_observation: Optional[str] = "Unknown"
+    field_condition: Optional[str] = "Unknown"
+
     created_at: datetime
     updated_at: datetime
     images: List[ImageRecordOut] = []

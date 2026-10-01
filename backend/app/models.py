@@ -1,6 +1,6 @@
-﻿"""
+"""
 Database models for Case, ImageRecord, ExpertReview, and AuditLog.
-Adheres to Review 1 Schema requirements.
+Adheres to Review 1 Schema requirements and Phase 2 non-destructive extensions.
 """
 
 from datetime import datetime, timezone
@@ -47,6 +47,16 @@ class Case(Base):
     # Notes & Metadata
     farmer_notes = Column(Text, nullable=True)
     environmental_notes = Column(Text, nullable=True)
+
+    # Phase 2.3 Environmental / Microclimate Context Fields
+    rainfall_recent = Column(String(32), nullable=True, default="Unknown")
+    humidity_level = Column(String(32), nullable=True, default="Unknown")
+    temperature_band = Column(String(32), nullable=True, default="Unknown")
+    recent_weather_event = Column(String(64), nullable=True, default="None")
+    irrigation_status = Column(String(32), nullable=True, default="Unknown")
+    soil_moisture_observation = Column(String(32), nullable=True, default="Unknown")
+    field_condition = Column(String(32), nullable=True, default="Unknown")
+
     created_at = Column(DateTime, nullable=False, default=utcnow)
     updated_at = Column(DateTime, nullable=False, default=utcnow, onupdate=utcnow)
 

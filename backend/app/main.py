@@ -22,6 +22,7 @@ from backend.app.image_quality import analyze_image_quality
 from backend.app.ai_assistant import classify_observation
 from backend.app.priority import calculate_priority_score
 from backend.app.metrics import compute_metrics_summary
+from backend.app.vision_service import predict_image, get_vision_model, CLASSES, MODEL_PATH
 
 # Ensure DB initialized
 init_db()
@@ -84,6 +85,14 @@ async def submit_case(
     longitude: Optional[float] = Form(None),
     farmer_notes: Optional[str] = Form(None),
     environmental_notes: Optional[str] = Form(None),
+    # Phase 2.3 Environmental Context fields (with backward-compatible defaults)
+    rainfall_recent: Optional[str] = Form("Unknown"),
+    humidity_level: Optional[str] = Form("Unknown"),
+    temperature_band: Optional[str] = Form("Unknown"),
+    recent_weather_event: Optional[str] = Form("None"),
+    irrigation_status: Optional[str] = Form("Unknown"),
+    soil_moisture_observation: Optional[str] = Form("Unknown"),
+    field_condition: Optional[str] = Form("Unknown"),
     image_whole: Optional[UploadFile] = File(None),
     image_affected: Optional[UploadFile] = File(None),
     image_detail: Optional[UploadFile] = File(None),
@@ -91,7 +100,7 @@ async def submit_case(
 ):
     """
     Submits a standardized disease observation case from the farmer interface.
-    Performs image quality analysis, runs experimental AI assistance, and assigns priority.
+    Performs image quality analysis, runs MobileNetV3 + hybrid AI assistance, and assigns priority.
     """
     # 1. Parse symptoms
     symptom_list: List[str] = []
@@ -127,11 +136,15 @@ async def submit_case(
         ("affected_area", image_affected),
         ("leaf_detail", image_detail)
     ]
+    leaf_bytes: Optional[bytes] = None
 
     for img_type, upload_file in upload_map:
         if upload_file and upload_file.filename:
             content = await upload_file.read()
             if len(content) > 0:
+                if img_type == "leaf_detail" or leaf_bytes is None:
+                    leaf_bytes = content
+
                 # Analyze image quality
                 q_res = analyze_image_quality(content, upload_file.filename)
                 quality_scores.append(q_res["quality_score"])
@@ -157,23 +170,35 @@ async def submit_case(
                 )
                 saved_images.append(image_rec)
 
-    # 5. Experimental AI Classification
+    # 5. Vision Inference (MobileNetV3) & Hybrid AI Classification
+    vision_result = None
+    if leaf_bytes:
+        try:
+            vision_result = predict_image(leaf_bytes)
+        except Exception:
+            vision_result = None
+
     avg_quality = sum(quality_scores) / len(quality_scores) if quality_scores else 50.0
     ai_result = classify_observation(
         crop=crop,
         symptoms=symptom_list,
         crop_stage=crop_stage,
         image_quality_score=avg_quality,
-        has_image=len(saved_images) > 0
+        has_image=len(saved_images) > 0,
+        vision_result=vision_result
     )
 
-    # 6. Case Prioritization
+    # 6. Case Prioritization with Environmental Context
     priority, priority_reason = calculate_priority_score(
         severity=severity,
         crop_stage=crop_stage,
         ai_confidence=ai_result["confidence"],
         symptoms=symptom_list,
-        environmental_notes=environmental_notes
+        environmental_notes=environmental_notes,
+        rainfall_recent=rainfall_recent,
+        humidity_level=humidity_level,
+        soil_moisture=soil_moisture_observation,
+        recent_weather_event=recent_weather_event
     )
 
     # 7. Create Case in DB
@@ -197,7 +222,14 @@ async def submit_case(
         priority_reason=priority_reason,
         status="Submitted",
         farmer_notes=farmer_notes,
-        environmental_notes=environmental_notes
+        environmental_notes=environmental_notes,
+        rainfall_recent=rainfall_recent or "Unknown",
+        humidity_level=humidity_level or "Unknown",
+        temperature_band=temperature_band or "Unknown",
+        recent_weather_event=recent_weather_event or "None",
+        irrigation_status=irrigation_status or "Unknown",
+        soil_moisture_observation=soil_moisture_observation or "Unknown",
+        field_condition=field_condition or "Unknown"
     )
 
     db.add(new_case)
@@ -228,7 +260,8 @@ def submit_case_json(payload: CaseCreate, db: Session = Depends(get_db)):
         symptoms=payload.symptoms,
         crop_stage=payload.crop_stage,
         image_quality_score=85.0,
-        has_image=False
+        has_image=False,
+        vision_result=None
     )
 
     priority, reason = calculate_priority_score(
@@ -236,7 +269,11 @@ def submit_case_json(payload: CaseCreate, db: Session = Depends(get_db)):
         crop_stage=payload.crop_stage,
         ai_confidence=ai_result["confidence"],
         symptoms=payload.symptoms,
-        environmental_notes=payload.environmental_notes
+        environmental_notes=payload.environmental_notes,
+        rainfall_recent=payload.rainfall_recent,
+        humidity_level=payload.humidity_level,
+        soil_moisture=payload.soil_moisture_observation,
+        recent_weather_event=payload.recent_weather_event
     )
 
     new_case = Case(
@@ -259,7 +296,14 @@ def submit_case_json(payload: CaseCreate, db: Session = Depends(get_db)):
         priority_reason=reason,
         status="Submitted",
         farmer_notes=payload.farmer_notes,
-        environmental_notes=payload.environmental_notes
+        environmental_notes=payload.environmental_notes,
+        rainfall_recent=payload.rainfall_recent or "Unknown",
+        humidity_level=payload.humidity_level or "Unknown",
+        temperature_band=payload.temperature_band or "Unknown",
+        recent_weather_event=payload.recent_weather_event or "None",
+        irrigation_status=payload.irrigation_status or "Unknown",
+        soil_moisture_observation=payload.soil_moisture_observation or "Unknown",
+        field_condition=payload.field_condition or "Unknown"
     )
 
     db.add(new_case)
@@ -374,16 +418,40 @@ def submit_expert_review(
 
 
 @app.post("/api/cases/{case_id}/resubmit", response_model=CaseOut)
-def resubmit_case_information(
+async def resubmit_case_information(
     case_id: str,
     additional_notes: str = Form(...),
     new_image: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
-    """Allows a farmer or field agent to provide requested follow-up information."""
+    """Allows a farmer or field agent to provide requested follow-up information and optional photos."""
     case = db.query(Case).filter(Case.case_id == case_id).first()
     if not case:
         raise HTTPException(status_code=404, detail=f"Case {case_id} not found")
+
+    if new_image and new_image.filename:
+        content = await new_image.read()
+        if len(content) > 0:
+            q_res = analyze_image_quality(content, new_image.filename)
+            ext = Path(new_image.filename).suffix or ".jpg"
+            img_uuid = uuid.uuid4().hex[:8]
+            saved_filename = f"{case_id}_resubmit_{img_uuid}{ext}"
+            file_dest = UPLOADS_DIR / saved_filename
+            with open(file_dest, "wb") as f:
+                f.write(content)
+
+            image_rec = ImageRecord(
+                image_id=f"IMG-{img_uuid.upper()}",
+                case_id=case_id,
+                image_type="resubmitted_detail",
+                file_path=f"/uploads/{saved_filename}",
+                quality_score=q_res["quality_score"],
+                quality_warnings=json.dumps(q_res["warnings"]),
+                farmer_advice=json.dumps(q_res["farmer_advice"]),
+                source="Farmer Resubmission",
+                license="CC-BY-4.0 (Non-identifiable field observation)"
+            )
+            db.add(image_rec)
 
     case.farmer_notes = f"{case.farmer_notes or ''}\n[Resubmission update]: {additional_notes}".strip()
     case.status = "Under Review"
@@ -398,6 +466,32 @@ def resubmit_case_information(
     db.commit()
     db.refresh(case)
     return case
+
+
+@app.post("/api/vision-predict")
+async def vision_predict_endpoint(image: UploadFile = File(...)):
+    """Direct visual category inference using MobileNetV3-Small."""
+    content = await image.read()
+    if not content:
+        raise HTTPException(status_code=400, detail="Empty image upload")
+    res = predict_image(content)
+    if res is None:
+        raise HTTPException(status_code=500, detail="Vision inference could not process image")
+    return res
+
+
+@app.get("/api/vision/status")
+def vision_status_endpoint():
+    """Returns status of MobileNetV3-Small vision model."""
+    model, device, transform = get_vision_model()
+    return {
+        "status": "loaded" if model is not None else "unavailable",
+        "model_architecture": "MobileNetV3-Small",
+        "num_classes": len(CLASSES),
+        "classes": CLASSES,
+        "device": str(device) if device else "none",
+        "checkpoint_exists": MODEL_PATH.exists()
+    }
 
 
 @app.post("/api/quality-check", response_model=ImageQualityResult)
