@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Main Application Controller for Agricultural Disease Observation App.
  */
 
@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
         OfficerDashboard.fetchCases();
       } else if (targetView === "view-expert") {
         ExpertStation.fetchPendingCases();
+      } else if (targetView === "view-track") {
+        if (typeof FarmerTrack !== "undefined") FarmerTrack.checkUrlCaseId();
       }
     });
   });
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof FarmerWizard !== "undefined") FarmerWizard.init();
   if (typeof OfficerDashboard !== "undefined") OfficerDashboard.init();
   if (typeof ExpertStation !== "undefined") ExpertStation.init();
+  if (typeof FarmerTrack !== "undefined") FarmerTrack.init();
 
   // Reset Demo Data Button
   const resetBtn = document.getElementById("btn-reset-demo");

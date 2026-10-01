@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Agricultural Disease Observation & Expert Escalation App
    Farmer-Friendly, High-Contrast, Accessible UI Theme
    ========================================================================== */
@@ -664,3 +664,85 @@ footer {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Phase 2: Offline & Network Status Indicators */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+.status-pill-online {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+}
+.status-pill-offline {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe082;
+}
+
+/* Phase 2.5: Case Tracking Stepper */
+.track-stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+  position: relative;
+}
+.track-stepper::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 30px;
+  right: 30px;
+  height: 4px;
+  background: #e0e0e0;
+  z-index: 1;
+}
+.track-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+}
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #bdbdbd;
+  color: #757575;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+.track-step.active .step-circle {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+.track-step.needs-info .step-circle {
+  border-color: #f57c00;
+  background: #fff3e0;
+  color: #e65100;
+}
+.step-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #616161;
+}
+.track-step.active .step-label {
+  color: var(--primary-dark);
+}
+

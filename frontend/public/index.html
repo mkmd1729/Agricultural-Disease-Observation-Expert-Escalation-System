@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -18,12 +18,20 @@
           <p>Review 1 MVP — Standardized Disease Reporting & Rapid Expert Triage</p>
         </div>
       </div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div id="network-status-badge" class="status-pill status-pill-online">🟢 Online (Connected)</div>
+        <button id="btn-manual-sync" class="btn btn-outline" style="display:none; font-size:0.8rem; padding:0.25rem 0.6rem; color:#fff; border-color:#fff;" onclick="OfflineSync.syncQueue()">🔄 Sync (0)</button>
+      </div>
       <nav class="nav-tabs">
         <button class="nav-tab active" data-view="view-farmer">🌾 Farmer Report</button>
+        <button class="nav-tab" data-view="view-track">🔍 Track Case / Resubmit</button>
         <button class="nav-tab" data-view="view-officer">📊 Officer Dashboard</button>
         <button class="nav-tab" data-view="view-expert">🔬 Expert Station</button>
         <button class="nav-tab" data-view="view-edge-cases">⚡ Edge Cases</button>
       </nav>
+    </div>
+    <div id="offline-alert-banner" class="alert alert-warning" style="display:none; max-width:1280px; margin:0.5rem auto 0; padding:0.5rem 1rem; font-size:0.88rem;">
+      <strong>🟠 Offline Mode Active:</strong> Internet connection is currently unavailable. Observations will be safely preserved in local browser storage and synchronized automatically once connection is restored.
     </div>
   </header>
 
@@ -295,6 +303,69 @@
             </div>
           </div>
 
+          <!-- Structured Environmental / Microclimate Context -->
+          <div style="background:#f4fbf4; border:1px solid #c8e6c9; border-radius:8px; padding:1rem; margin-top:1rem;">
+            <h4 style="color:#1b5e20; margin-bottom:0.5rem; font-size:0.95rem;">🌦️ Environmental & Microclimate Context (Optional):</h4>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Recent Rainfall:</label>
+                <select class="form-control" id="select-rainfall" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="None">None (Dry Period)</option>
+                  <option value="Light">Light / Drizzle</option>
+                  <option value="Moderate">Moderate Rainfall</option>
+                  <option value="High">Heavy Rain / Downpour</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Humidity Level:</label>
+                <select class="form-control" id="select-humidity" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="Low">Low (&lt;40%)</option>
+                  <option value="Normal">Normal (40-70%)</option>
+                  <option value="High">High (&gt;70% Foggy/Humid)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Temperature Band:</label>
+                <select class="form-control" id="select-temp" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="Cool (<20°C)">Cool (&lt;20°C)</option>
+                  <option value="Warm (20-30°C)">Warm (20-30°C)</option>
+                  <option value="Hot (>30°C)">Hot (&gt;30°C)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Soil Moisture / Waterlogging:</label>
+                <select class="form-control" id="select-soil" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="Dry">Dry / Cracking</option>
+                  <option value="Moist">Optimal Moist</option>
+                  <option value="Waterlogged">Waterlogged / Standing Water</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Irrigation Condition:</label>
+                <select class="form-control" id="select-irrigation" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="Rainfed">Rainfed Only</option>
+                  <option value="Canal Irrigated">Canal Irrigated</option>
+                  <option value="Borewell / Well">Borewell / Open Well</option>
+                  <option value="Drip / Sprinkler">Drip / Sprinkler</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.82rem;">Field Drainage:</label>
+                <select class="form-control" id="select-field-cond" style="font-size:0.85rem; padding:0.4rem;">
+                  <option value="Unknown">Not Specified / Unknown</option>
+                  <option value="Well Drained">Well Drained</option>
+                  <option value="Moderate Drainage">Moderate Drainage</option>
+                  <option value="Poor Drainage">Poor Drainage / Depressed Basin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label">Additional Farmer Notes or Weather Observations (Optional):</label>
             <textarea class="form-control" id="input-farmer-notes" rows="2" placeholder="e.g. Heavy rain 2 days ago; yellowing noticed mostly on lower leaves near wet soil."></textarea>
@@ -331,6 +402,38 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 1B: FARMER CASE TRACKING & RESUBMISSION (PHASE 2.5)
+         ========================================================================= -->
+    <section id="view-track" class="view-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>🔍 Track Case / Resubmit Clarification</span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;">
+          Track the validation progress of your crop disease report, review agronomist recommendations, or answer expert requests for additional photos and symptom details.
+        </p>
+
+        <!-- Search Bar -->
+        <div style="background:#f4fbf4; border:1px solid #c8e6c9; border-radius:8px; padding:1.25rem; margin-bottom:1rem;">
+          <h4 style="color:var(--primary-dark); margin-bottom:0.5rem;">Enter Your Observation Case ID:</h4>
+          <div style="display:flex; gap:0.5rem; max-width:540px;">
+            <input type="text" id="input-track-case-id" class="form-control" placeholder="e.g. CASE-2026-001 or CASE-2026-002" style="font-weight:600; text-transform:uppercase;">
+            <button id="btn-track-search" class="btn btn-primary" style="white-space:nowrap;">Search Case ➔</button>
+          </div>
+          <small style="color:var(--text-muted); display:block; margin-top:0.4rem;">
+            Quick demo links: 
+            <a href="javascript:void(0)" onclick="document.getElementById('input-track-case-id').value='CASE-2026-001'; FarmerTrack.trackCase('CASE-2026-001');" style="color:var(--primary); font-weight:600;">CASE-2026-001 (Validated)</a> | 
+            <a href="javascript:void(0)" onclick="document.getElementById('input-track-case-id').value='CASE-2026-002'; FarmerTrack.trackCase('CASE-2026-002');" style="color:#e65100; font-weight:600;">CASE-2026-002 (Needs Info)</a> | 
+            <a href="javascript:void(0)" onclick="document.getElementById('input-track-case-id').value='CASE-2026-004'; FarmerTrack.trackCase('CASE-2026-004');" style="color:#0277bd; font-weight:600;">CASE-2026-004 (Low Conf)</a>
+          </small>
+        </div>
+
+        <!-- Case Tracking & Resubmission Container -->
+        <div id="track-result-container" style="display:none;"></div>
       </div>
     </section>
 
@@ -545,37 +648,81 @@
           Review 1 requires demonstrating at least three specific edge and failure cases. Click below to execute and inspect the system response for each scenario:
         </p>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
           <!-- Card 1 -->
           <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
-            <h4 style="color:#e65100; margin-bottom:0.5rem;">Edge Case 1: Poor Image</h4>
-            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
-              Tests behavior when a farmer uploads a blurry, severely underexposed, or low-contrast leaf photo.
+            <h4 style="color:#e65100; margin-bottom:0.5rem;">1. Poor Image Quality</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when a farmer uploads a blurry, severely underexposed, or low-contrast leaf photo. Shows non-blocking guidance.
             </p>
-            <button class="btn btn-warning" style="width:100%; font-size:0.9rem;" onclick="EdgeCaseSandbox.runEdgeCase1()">
-              Run Edge Case 1 Test →
+            <button class="btn btn-warning" style="width:100%; font-size:0.88rem;" onclick="EdgeCaseSandbox.runEdgeCase1()">
+              Run Test 1 →
             </button>
           </div>
 
           <!-- Card 2 -->
           <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
-            <h4 style="color:#0277bd; margin-bottom:0.5rem;">Edge Case 2: Low Confidence (&lt;60%)</h4>
-            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
-              Tests behavior when the classifier confidence drops below 60%. System must refuse a diagnosis and escalate priority.
+            <h4 style="color:#0277bd; margin-bottom:0.5rem;">2. Low Confidence (&lt;60%)</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when the vision model confidence drops below 60%. Automatically promotes case to High Priority triage.
             </p>
-            <button class="btn btn-primary" style="width:100%; font-size:0.9rem; background:#0288d1;" onclick="EdgeCaseSandbox.runEdgeCase2()">
-              Run Edge Case 2 Test →
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem; background:#0288d1;" onclick="EdgeCaseSandbox.runEdgeCase2()">
+              Run Test 2 →
             </button>
           </div>
 
           <!-- Card 3 -->
           <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
-            <h4 style="color:#2e7d32; margin-bottom:0.5rem;">Edge Case 3: Conflicting Validation</h4>
-            <p style="font-size:0.88rem; color:#616161; margin-bottom:1rem;">
-              Tests behavior when AI suggests Category A (e.g. salinity scorch) but the expert diagnoses Category B (e.g. nitrogen deficiency).
+            <h4 style="color:#2e7d32; margin-bottom:0.5rem;">3. Conflicting Override</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests behavior when expert overrides an AI proposal. Expert diagnosis is strictly authoritative; AI saved for error audit.
             </p>
-            <button class="btn btn-primary" style="width:100%; font-size:0.9rem;" onclick="EdgeCaseSandbox.runEdgeCase3()">
-              Run Edge Case 3 Test →
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem;" onclick="EdgeCaseSandbox.runEdgeCase3()">
+              Run Test 3 →
+            </button>
+          </div>
+
+          <!-- Card 4 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#6a1b9a; margin-bottom:0.5rem;">4. Offline Queue & Sync</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Simulates farmer submitting while offline. Stores safely in IndexedDB, then triggers auto-sync to backend when connected.
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem; background:#6a1b9a;" onclick="EdgeCaseSandbox.runEdgeCase4()">
+              Run Test 4 →
+            </button>
+          </div>
+
+          <!-- Card 5 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#d84315; margin-bottom:0.5rem;">5. Duplicate Prevention</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests idempotent client-sync tracking. Prevents duplicated case submissions caused by network retries or repeated sync calls.
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem; background:#d84315;" onclick="EdgeCaseSandbox.runEdgeCase5()">
+              Run Test 5 →
+            </button>
+          </div>
+
+          <!-- Card 6 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#00695c; margin-bottom:0.5rem;">6. Missing Environment</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests submission without environmental or microclimate indicators. Validates graceful defaulting to "Unknown" without failure.
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem; background:#00695c;" onclick="EdgeCaseSandbox.runEdgeCase6()">
+              Run Test 6 →
+            </button>
+          </div>
+
+          <!-- Card 7 -->
+          <div style="border:1px solid var(--border-color); border-radius:8px; padding:1.25rem; background:#fff;">
+            <h4 style="color:#c2185b; margin-bottom:0.5rem;">7. Tracking & Resubmit</h4>
+            <p style="font-size:0.85rem; color:#616161; margin-bottom:1rem;">
+              Tests the complete farmer tracking loop: case inquiry -> farmer provides requested clarification -> status updates to Under Review.
+            </p>
+            <button class="btn btn-primary" style="width:100%; font-size:0.88rem; background:#c2185b;" onclick="EdgeCaseSandbox.runEdgeCase7()">
+              Run Test 7 →
             </button>
           </div>
         </div>
@@ -604,7 +751,7 @@
   <footer>
     <div style="max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
       <div>
-        <strong>Agri-Disease Observation & Expert Escalation System</strong> — Review 1 Prototype (~35% Scope).
+        <strong>Agri-Disease Observation & Expert Escalation System</strong> — Phase 2 Hybrid ML & Offline System (~70% Scope).
       </div>
       <div>
         <small style="color:#757575;">Prototype/simulated evaluation — not field validation. No PII collected.</small>
@@ -613,7 +760,9 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="/js/offline_sync.js"></script>
   <script src="/js/farmer_wizard.js"></script>
+  <script src="/js/farmer_track.js"></script>
   <script src="/js/officer_dashboard.js"></script>
   <script src="/js/expert_station.js"></script>
   <script src="/js/edge_cases.js"></script>
