@@ -10,8 +10,8 @@
     "crop_stage": "Flowering",
     "symptoms": "leaf_spots, yellowing_chlorosis",
     "severity": "Severe",
-    "first_symptom_time": "2026-09-06T22:22:24.848717+00:00",
-    "submission_time": "2026-09-07T16:22:24.848748+00:00",
+    "first_symptom_time": "2026-09-30T01:44:44.213335+00:00",
+    "submission_time": "2026-09-30T19:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom",
     "ai_confidence": 74.0,
     "ai_alternative": "Bacterial leaf spot",
@@ -42,8 +42,8 @@
     "crop_stage": "Fruiting",
     "symptoms": "leaf_spots",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-07T10:22:24.848775+00:00",
-    "submission_time": "2026-09-08T02:22:24.848777+00:00",
+    "first_symptom_time": "2026-09-30T13:44:44.213335+00:00",
+    "submission_time": "2026-10-01T05:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom",
     "ai_confidence": 72.0,
     "ai_alternative": "Bacterial leaf spot",
@@ -52,7 +52,7 @@
     "status": "Expert Validated",
     "expert_validation": "Fungal leaf blight (Early blight - Alternaria solani)",
     "expert_comments": "Classic Alternaria target-board concentric rings. Apply copper oxychloride or azoxystrobin spray. Remove lower infected leaves.",
-    "expert_review_time": "2026-09-08T08:22:24.848780+00:00",
+    "expert_review_time": "2026-10-01T11:44:44.213335+00:00",
     "farmer_notes": "Small brown spots on tomato leaves.",
     "images": [
       {
@@ -71,7 +71,7 @@
         "status": "confirmed",
         "comments": "Confirmed early blight. Clear concentric lesions.",
         "urgency": "Prompt",
-        "time": "2026-09-08T08:22:24.848787+00:00"
+        "time": "2026-10-01T11:44:44.213335+00:00"
       }
     ]
   },
@@ -86,8 +86,8 @@
     "crop_stage": "Vegetative",
     "symptoms": "leaf_spots",
     "severity": "Low",
-    "first_symptom_time": "2026-09-06T10:22:24.848795+00:00",
-    "submission_time": "2026-09-07T22:22:24.848797+00:00",
+    "first_symptom_time": "2026-09-29T13:44:44.213335+00:00",
+    "submission_time": "2026-10-01T01:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom",
     "ai_confidence": 58.0,
     "ai_alternative": "Unclassified foliar symptom",
@@ -123,8 +123,8 @@
     "crop_stage": "Seedling",
     "symptoms": "wilting, stunting",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-07T16:22:24.848805+00:00",
-    "submission_time": "2026-09-08T04:22:24.848826+00:00",
+    "first_symptom_time": "2026-09-30T19:44:44.213335+00:00",
+    "submission_time": "2026-10-01T07:44:44.213335+00:00",
     "ai_prediction": "Wilting symptom (Water stress or vascular pathogen)",
     "ai_confidence": 51.0,
     "ai_alternative": "Bacterial wilt",
@@ -155,8 +155,8 @@
     "crop_stage": "Vegetative",
     "symptoms": "yellowing_chlorosis, tip_burn",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-05T10:22:24.848834+00:00",
-    "submission_time": "2026-09-07T20:22:24.848837+00:00",
+    "first_symptom_time": "2026-09-28T13:44:44.213335+00:00",
+    "submission_time": "2026-09-30T23:44:44.213335+00:00",
     "ai_prediction": "Abiotic stress (Salinity/heat scorch)",
     "ai_confidence": 68.0,
     "ai_alternative": "Potassium deficiency",
@@ -165,7 +165,7 @@
     "status": "Expert Validated",
     "expert_validation": "Abiotic Nitrogen Deficiency (Not a biological disease)",
     "expert_comments": "V-shaped chlorosis extending along midrib from tip inward is diagnostic for Nitrogen deficiency, not fungal blight. Apply top-dressing urea 25 kg/acre. No fungicide needed.",
-    "expert_review_time": "2026-09-08T06:22:24.848840+00:00",
+    "expert_review_time": "2026-10-01T09:44:44.213335+00:00",
     "farmer_notes": "Lower maize leaves turning yellow in V-shape.",
     "images": [
       {
@@ -184,7 +184,7 @@
         "status": "rejected_ai",
         "comments": "AI predicted Salinity scorch; actual diagnosis is severe Nitrogen deficiency. Expert override applied.",
         "urgency": "Routine",
-        "time": "2026-09-08T06:22:24.848846+00:00"
+        "time": "2026-10-01T09:44:44.213335+00:00"
       }
     ]
   },
@@ -199,8 +199,8 @@
     "crop_stage": "Tillering",
     "symptoms": "water_soaked_lesions",
     "severity": "Severe",
-    "first_symptom_time": "2026-09-06T18:22:24.848855+00:00",
-    "submission_time": "2026-09-07T18:22:24.848857+00:00",
+    "first_symptom_time": "2026-09-29T21:44:44.213335+00:00",
+    "submission_time": "2026-09-30T21:44:44.213335+00:00",
     "ai_prediction": "Bacterial-like symptom",
     "ai_confidence": 76.0,
     "ai_alternative": "Fungal leaf spot",
@@ -209,7 +209,7 @@
     "status": "Expert Validated",
     "expert_validation": "Bacterial Leaf Blight (Xanthomonas oryzae)",
     "expert_comments": "Water-soaked stripes along leaf margins with bacterial ooze beads. Drain field water temporarily, avoid nitrogen fertilizer top-dressing.",
-    "expert_review_time": "2026-09-08T05:22:24.848859+00:00",
+    "expert_review_time": "2026-10-01T08:44:44.213335+00:00",
     "farmer_notes": "Yellow-orange wavy margins starting from leaf tips.",
     "images": [
       {
@@ -228,7 +228,7 @@
         "status": "confirmed",
         "comments": "Confirmed Xanthomonas oryzae.",
         "urgency": "Urgent",
-        "time": "2026-09-08T05:22:24.848868+00:00"
+        "time": "2026-10-01T08:44:44.213335+00:00"
       }
     ]
   },
@@ -243,8 +243,8 @@
     "crop_stage": "Vegetative",
     "symptoms": "mosaic_pattern, leaf_curling",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-04T10:22:24.848873+00:00",
-    "submission_time": "2026-09-07T14:22:24.848875+00:00",
+    "first_symptom_time": "2026-09-27T13:44:44.213335+00:00",
+    "submission_time": "2026-09-30T17:44:44.213335+00:00",
     "ai_prediction": "Viral-like symptom (Mosaic)",
     "ai_confidence": 80.0,
     "ai_alternative": "Genetic variegation / zinc deficiency",
@@ -253,7 +253,7 @@
     "status": "Expert Validated",
     "expert_validation": "Cassava Mosaic Geminivirus (CMD)",
     "expert_comments": "Severe mosaic mottled leaves and twisted growth. Whitefly vector transmitted. Rogue infected plants to protect neighboring crops.",
-    "expert_review_time": "2026-09-08T04:22:24.848877+00:00",
+    "expert_review_time": "2026-10-01T07:44:44.213335+00:00",
     "farmer_notes": "Leaves showing mottled yellow-green patterns and curling.",
     "images": [
       {
@@ -272,7 +272,7 @@
         "status": "confirmed",
         "comments": "Cassava mosaic confirmed. Rogueing advised.",
         "urgency": "Prompt",
-        "time": "2026-09-08T04:22:24.848883+00:00"
+        "time": "2026-10-01T07:44:44.213335+00:00"
       }
     ]
   },
@@ -287,8 +287,8 @@
     "crop_stage": "Tillering",
     "symptoms": "healthy",
     "severity": "Low",
-    "first_symptom_time": "2026-09-07T14:22:24.848888+00:00",
-    "submission_time": "2026-09-08T00:22:24.848890+00:00",
+    "first_symptom_time": "2026-09-30T17:44:44.213335+00:00",
+    "submission_time": "2026-10-01T03:44:44.213335+00:00",
     "ai_prediction": "Healthy crop appearance",
     "ai_confidence": 88.0,
     "ai_alternative": "Early-stage latent infection",
@@ -297,7 +297,7 @@
     "status": "Expert Validated",
     "expert_validation": "Healthy Crop - No Pathogen Detected",
     "expert_comments": "Foliage shows vigorous green coloration and uniform tillering. No fungal pustules or rust noticed. Continue standard weed management.",
-    "expert_review_time": "2026-09-08T07:22:24.848892+00:00",
+    "expert_review_time": "2026-10-01T10:44:44.213335+00:00",
     "farmer_notes": "Checking crop before second irrigation.",
     "images": [
       {
@@ -316,7 +316,7 @@
         "status": "confirmed",
         "comments": "Confirmed healthy stand.",
         "urgency": "Routine",
-        "time": "2026-09-08T07:22:24.848898+00:00"
+        "time": "2026-10-01T10:44:44.213335+00:00"
       }
     ]
   },
@@ -331,8 +331,8 @@
     "crop_stage": "Flowering",
     "symptoms": "wilting",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-07T04:22:24.848903+00:00",
-    "submission_time": "2026-09-07T19:22:24.848905+00:00",
+    "first_symptom_time": "2026-09-30T07:44:44.213335+00:00",
+    "submission_time": "2026-09-30T22:44:44.213335+00:00",
     "ai_prediction": "Wilting symptom (Water stress or vascular pathogen)",
     "ai_confidence": 54.0,
     "ai_alternative": "Bacterial wilt",
@@ -340,7 +340,7 @@
     "priority_reason": "Low AI confidence (54.0% < 60%) \u2014 urgent expert escalation required; Critical growth stage",
     "status": "More Information Required",
     "expert_comments": "Please cut the lower stem at soil level and place in a glass of clear water. Report whether milky bacterial streaming oozes out.",
-    "expert_review_time": "2026-09-08T05:22:24.848907+00:00",
+    "expert_review_time": "2026-10-01T08:44:44.213335+00:00",
     "farmer_notes": "Single plant wilting while neighboring plants look okay.",
     "images": [
       {
@@ -359,7 +359,7 @@
         "status": "more_info_needed",
         "comments": "Stem ooze test required to distinguish Ralstonia from Fusarium.",
         "urgency": "Prompt",
-        "time": "2026-09-08T05:22:24.848913+00:00"
+        "time": "2026-10-01T08:44:44.213335+00:00"
       }
     ]
   },
@@ -374,8 +374,8 @@
     "crop_stage": "Fruiting",
     "symptoms": "leaf_spots",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-06T10:22:24.848918+00:00",
-    "submission_time": "2026-09-08T02:22:24.848920+00:00",
+    "first_symptom_time": "2026-09-29T13:44:44.213335+00:00",
+    "submission_time": "2026-10-01T05:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom",
     "ai_confidence": 57.0,
     "ai_alternative": "Unclassified foliar symptom",
@@ -409,8 +409,8 @@
     "crop_stage": "Flowering",
     "symptoms": "powdery_coating",
     "severity": "High",
-    "first_symptom_time": "2026-09-06T06:22:24.848927+00:00",
-    "submission_time": "2026-09-07T12:22:24.848929+00:00",
+    "first_symptom_time": "2026-09-29T09:44:44.213335+00:00",
+    "submission_time": "2026-09-30T15:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom (Powdery mildew)",
     "ai_confidence": 85.0,
     "ai_alternative": "Abiotic dust/pesticide residue",
@@ -419,7 +419,7 @@
     "status": "Expert Validated",
     "expert_validation": "Powdery Mildew (Oidium neolycopersici)",
     "expert_comments": "White talcum-like fungal powder on upper leaf surfaces. Apply wettable sulfur 2g/L or potassium bicarbonate.",
-    "expert_review_time": "2026-09-08T00:22:24.848932+00:00",
+    "expert_review_time": "2026-10-01T03:44:44.213335+00:00",
     "farmer_notes": "White powder spreading over leaves in greenhouse.",
     "images": [
       {
@@ -438,7 +438,7 @@
         "status": "confirmed",
         "comments": "Confirmed greenhouse powdery mildew.",
         "urgency": "Urgent",
-        "time": "2026-09-08T00:22:24.848938+00:00"
+        "time": "2026-10-01T03:44:44.213335+00:00"
       }
     ]
   },
@@ -453,8 +453,8 @@
     "crop_stage": "Tillering",
     "symptoms": "rust_pustules, yellowing_chlorosis",
     "severity": "Medium",
-    "first_symptom_time": "2026-09-05T22:22:24.848942+00:00",
-    "submission_time": "2026-09-07T10:22:24.848945+00:00",
+    "first_symptom_time": "2026-09-29T01:44:44.213335+00:00",
+    "submission_time": "2026-09-30T13:44:44.213335+00:00",
     "ai_prediction": "Fungal-like symptom (Rust)",
     "ai_confidence": 82.0,
     "ai_alternative": "Nutrient deficiency",

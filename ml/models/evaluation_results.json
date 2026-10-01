@@ -107,9 +107,9 @@
   "latency_stats": {
     "runtime_environment": "Windows 11 (AMD64), Python 3.12.10",
     "device": "CPU",
-    "mean_ms": 11.4,
-    "min_ms": 8.45,
-    "max_ms": 20.61
+    "mean_ms": 10.51,
+    "min_ms": 8.46,
+    "max_ms": 19.14
   },
   "systematic_errors": [],
   "disclaimer": "Prototype benchmark evaluation. Results reflect synthetic reference assets and are not field validated."

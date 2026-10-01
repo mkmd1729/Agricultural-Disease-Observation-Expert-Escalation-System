@@ -549,7 +549,14 @@ def seed_database():
             expert_comments=c.get("expert_comments"),
             expert_review_time=c.get("expert_review_time"),
             farmer_notes=c.get("farmer_notes"),
-            environmental_notes=c.get("environmental_notes")
+            environmental_notes=c.get("environmental_notes"),
+            rainfall_recent=c.get("rainfall_recent", "Unknown"),
+            humidity_level=c.get("humidity_level", "Unknown"),
+            temperature_band=c.get("temperature_band", "Unknown"),
+            recent_weather_event=c.get("recent_weather_event", "None"),
+            irrigation_status=c.get("irrigation_status", "Unknown"),
+            soil_moisture_observation=c.get("soil_moisture_observation", "Unknown"),
+            field_condition=c.get("field_condition", "Unknown")
         )
         db.add(db_case)
 
