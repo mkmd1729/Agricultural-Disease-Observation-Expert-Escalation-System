@@ -21,8 +21,37 @@ from backend.app.schemas import CaseOut, CaseCreate, ExpertReviewCreate, ExpertR
 from backend.app.image_quality import analyze_image_quality
 from backend.app.ai_assistant import classify_observation
 from backend.app.priority import calculate_priority_score
-from backend.app.metrics import compute_metrics_summary
+from backend.app.metrics import (
+    compute_metrics_summary,
+    compute_regional_analytics,
+    compute_t_review_analytics,
+    compute_ai_monitoring_metrics
+)
+from backend.app.i18n import get_supported_languages, get_translation_dictionary
 from backend.app.vision_service import predict_image, get_vision_model, CLASSES, MODEL_PATH
+
+# Maximum allowed file size for image uploads (10 MB)
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def validate_image_upload(filename: str, content: bytes) -> str:
+    """
+    Validates uploaded image file size and extension to prevent malicious or oversized uploads.
+    Extracts and returns the sanitized lowercase extension.
+    """
+    if len(content) > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"Image exceeds maximum permitted file size of 10 MB ({len(content)} bytes uploaded)."
+        )
+    raw_ext = Path(filename).suffix.lower()
+    if not raw_ext or raw_ext not in ALLOWED_IMAGE_EXTENSIONS:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid image extension '{raw_ext}'. Allowed formats: {', '.join(sorted(ALLOWED_IMAGE_EXTENSIONS))}."
+        )
+    return raw_ext
 
 # Ensure DB initialized
 init_db()
@@ -142,17 +171,18 @@ async def submit_case(
         if upload_file and upload_file.filename:
             content = await upload_file.read()
             if len(content) > 0:
+                safe_filename = Path(upload_file.filename).name
+                safe_ext = validate_image_upload(safe_filename, content)
                 if img_type == "leaf_detail" or leaf_bytes is None:
                     leaf_bytes = content
 
                 # Analyze image quality
-                q_res = analyze_image_quality(content, upload_file.filename)
+                q_res = analyze_image_quality(content, safe_filename)
                 quality_scores.append(q_res["quality_score"])
 
                 # Save file to disk
-                ext = Path(upload_file.filename).suffix or ".jpg"
                 img_uuid = uuid.uuid4().hex[:8]
-                saved_filename = f"{case_id}_{img_type}_{img_uuid}{ext}"
+                saved_filename = f"{case_id}_{img_type}_{img_uuid}{safe_ext}"
                 file_dest = UPLOADS_DIR / saved_filename
                 with open(file_dest, "wb") as f:
                     f.write(content)
@@ -432,10 +462,11 @@ async def resubmit_case_information(
     if new_image and new_image.filename:
         content = await new_image.read()
         if len(content) > 0:
-            q_res = analyze_image_quality(content, new_image.filename)
-            ext = Path(new_image.filename).suffix or ".jpg"
+            safe_filename = Path(new_image.filename).name
+            safe_ext = validate_image_upload(safe_filename, content)
+            q_res = analyze_image_quality(content, safe_filename)
             img_uuid = uuid.uuid4().hex[:8]
-            saved_filename = f"{case_id}_resubmit_{img_uuid}{ext}"
+            saved_filename = f"{case_id}_resubmit_{img_uuid}{safe_ext}"
             file_dest = UPLOADS_DIR / saved_filename
             with open(file_dest, "wb") as f:
                 f.write(content)
@@ -471,9 +502,11 @@ async def resubmit_case_information(
 @app.post("/api/vision-predict")
 async def vision_predict_endpoint(image: UploadFile = File(...)):
     """Direct visual category inference using MobileNetV3-Small."""
+    safe_filename = Path(image.filename or "photo.jpg").name
     content = await image.read()
     if not content:
         raise HTTPException(status_code=400, detail="Empty image upload")
+    validate_image_upload(safe_filename, content)
     res = predict_image(content)
     if res is None:
         raise HTTPException(status_code=500, detail="Vision inference could not process image")
@@ -497,8 +530,12 @@ def vision_status_endpoint():
 @app.post("/api/quality-check", response_model=ImageQualityResult)
 async def check_image_endpoint(image: UploadFile = File(...)):
     """Live interactive image quality analysis endpoint for farmer photo guidance."""
+    safe_filename = Path(image.filename or "photo.jpg").name
     content = await image.read()
-    res = analyze_image_quality(content, image.filename or "photo.jpg")
+    if not content:
+        raise HTTPException(status_code=400, detail="Empty image upload")
+    validate_image_upload(safe_filename, content)
+    res = analyze_image_quality(content, safe_filename)
     return res
 
 
@@ -546,6 +583,55 @@ def get_edge_case_1(db: Session = Depends(get_db)):
 def get_metrics(db: Session = Depends(get_db)):
     """Returns dashboard metrics, T_review calculation, and before/after comparisons."""
     return compute_metrics_summary(db)
+
+
+@app.get("/api/analytics/regional")
+def get_regional_analytics(
+    crop: Optional[str] = None,
+    region: Optional[str] = None,
+    severity: Optional[str] = None,
+    priority: Optional[str] = None,
+    status: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Returns regional outbreak analytics, risk matrix, and active cluster alerts.
+    Supports multi-criteria filtering by crop, region, severity, priority, and status.
+    Clearly indicates prototype/simulated data.
+    """
+    return compute_regional_analytics(
+        db, crop=crop, region=region, severity=severity, priority=priority, status=status
+    )
+
+
+@app.get("/api/analytics/t-review")
+def get_t_review_analytics(db: Session = Depends(get_db)):
+    """
+    Returns granular T_review operational latency statistics (mean, median, min, max)
+    overall and broken down by priority, crop, and region.
+    """
+    return compute_t_review_analytics(db)
+
+
+@app.get("/api/analytics/ai-monitoring")
+def get_ai_monitoring_analytics(db: Session = Depends(get_db)):
+    """
+    Returns live AI confidence distributions, escalation rates,
+    expert agreement/override statistics, and static prototype benchmark metrics.
+    """
+    return compute_ai_monitoring_metrics(db)
+
+
+@app.get("/api/i18n/languages")
+def get_i18n_languages():
+    """Returns supported UI languages (English and Tamil)."""
+    return get_supported_languages()
+
+
+@app.get("/api/i18n/{lang}")
+def get_i18n_dictionary(lang: str):
+    """Returns full translation dictionary for requested language code (en or ta)."""
+    return get_translation_dictionary(lang)
 
 
 @app.get("/")

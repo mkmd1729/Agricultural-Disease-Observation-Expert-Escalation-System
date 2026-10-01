@@ -14,23 +14,46 @@
       <div class="logo-area">
         <div class="logo-icon">🌱</div>
         <div class="logo-title">
-          <h1>AgriObservation & Escalation</h1>
-          <p>Review 1 MVP — Standardized Disease Reporting & Rapid Expert Triage</p>
+          <h1 data-i18n="app_title">AgriObservation & Escalation</h1>
+          <p data-i18n="app_subtitle">Phase 3 Complete — Standardized Observation, MobileNetV3 AI Decision Support, Multilingual & Regional Analytics</p>
         </div>
       </div>
-      <div style="display:flex; align-items:center; gap:0.75rem;">
+      <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+        <!-- Language Selector -->
+        <div style="display:flex; align-items:center; gap:0.35rem; background:rgba(255,255,255,0.15); padding:0.25rem 0.6rem; border-radius:6px;">
+          <label for="language-select" style="color:#fff; font-size:0.8rem; font-weight:600;" data-i18n="language_select">🌐 Lang:</label>
+          <select id="language-select" style="font-size:0.82rem; padding:0.2rem 0.4rem; background:#fff; color:#222; border:none; border-radius:4px; font-weight:600; cursor:pointer;">
+            <option value="en">English (English)</option>
+            <option value="ta">Tamil (தமிழ்)</option>
+          </select>
+        </div>
+
+        <!-- Voice Controls -->
+        <div style="display:flex; align-items:center; gap:0.3rem;">
+          <button id="btn-voice-read-step" class="btn btn-outline" style="font-size:0.78rem; padding:0.25rem 0.5rem; color:#fff; border-color:rgba(255,255,255,0.7);" onclick="VoiceAssistant.readCurrentStep()" title="Read Step Instructions" data-i18n-title="voice_read_instructions">
+            🔊 <span data-i18n="voice_read_instructions">Read Aloud</span>
+          </button>
+          <button id="btn-voice-stop" class="btn btn-outline" style="font-size:0.78rem; padding:0.25rem 0.45rem; color:#ffcdd2; border-color:rgba(255,205,210,0.7);" onclick="VoiceAssistant.stop()" title="Stop Audio" data-i18n-title="voice_stop">
+            ⏹ <span data-i18n="voice_stop">Stop</span>
+          </button>
+          <span id="voice-status-feedback" class="voice-status-pill" style="display:none; font-size:0.75rem; padding:2px 8px; border-radius:10px; background:#fff; color:#333; font-weight:600;"></span>
+        </div>
+
+        <!-- Connectivity & Offline Sync -->
         <div id="network-status-badge" class="status-pill status-pill-online">🟢 Online (Connected)</div>
         <button id="btn-manual-sync" class="btn btn-outline" style="display:none; font-size:0.8rem; padding:0.25rem 0.6rem; color:#fff; border-color:#fff;" onclick="OfflineSync.syncQueue()">🔄 Sync (0)</button>
       </div>
+
       <nav class="nav-tabs">
-        <button class="nav-tab active" data-view="view-farmer">🌾 Farmer Report</button>
-        <button class="nav-tab" data-view="view-track">🔍 Track Case / Resubmit</button>
-        <button class="nav-tab" data-view="view-officer">📊 Officer Dashboard</button>
-        <button class="nav-tab" data-view="view-expert">🔬 Expert Station</button>
+        <button class="nav-tab active" data-view="view-farmer" data-i18n="nav_farmer">🌾 Farmer Report</button>
+        <button class="nav-tab" data-view="view-track" data-i18n="nav_tracking">🔍 Track Case / Resubmit</button>
+        <button class="nav-tab" data-view="view-officer" data-i18n="nav_officer">📊 Officer Dashboard</button>
+        <button class="nav-tab" data-view="view-expert" data-i18n="nav_expert">🔬 Expert Station</button>
+        <button class="nav-tab" data-view="view-regional" data-i18n="nav_regional">🗺️ Regional Analytics</button>
         <button class="nav-tab" data-view="view-edge-cases">⚡ Edge Cases</button>
       </nav>
     </div>
-    <div id="offline-alert-banner" class="alert alert-warning" style="display:none; max-width:1280px; margin:0.5rem auto 0; padding:0.5rem 1rem; font-size:0.88rem;">
+    <div id="offline-alert-banner" class="alert alert-warning" style="display:none; max-width:1280px; margin:0.5rem auto 0; padding:0.5rem 1rem; font-size:0.88rem;" data-i18n="offline_banner_offline">
       <strong>🟠 Offline Mode Active:</strong> Internet connection is currently unavailable. Observations will be safely preserved in local browser storage and synchronized automatically once connection is restored.
     </div>
   </header>
@@ -367,8 +390,13 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Additional Farmer Notes or Weather Observations (Optional):</label>
-            <textarea class="form-control" id="input-farmer-notes" rows="2" placeholder="e.g. Heavy rain 2 days ago; yellowing noticed mostly on lower leaves near wet soil."></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+              <label class="form-label" style="margin:0;" data-i18n="field_farmer_notes">Additional Farmer Notes or Weather Observations (Optional):</label>
+              <button type="button" class="btn btn-outline voice-dictate-btn" onclick="VoiceAssistant.startDictation('input-farmer-notes')" style="font-size:0.75rem; padding:0.2rem 0.5rem; border-color:#2e7d32; color:#1b5e20;">
+                🎤 <span data-i18n="voice_start_dictation">Voice Dictation</span>
+              </button>
+            </div>
+            <textarea class="form-control" id="input-farmer-notes" rows="2" placeholder="e.g. Heavy rain 2 days ago; yellowing noticed mostly on lower leaves near wet soil." data-i18n-placeholder="field_farmer_notes"></textarea>
           </div>
 
           <div class="wizard-footer">
@@ -734,6 +762,130 @@
       </div>
     </section>
 
+    <!-- =========================================================================
+         VIEW 5: REGIONAL OUTBREAK ANALYTICS & RISK MATRIX (PHASE 3)
+         ========================================================================= -->
+    <section id="view-regional" class="view-panel">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+          <div class="card-title" style="margin:0;">
+            <span data-i18n="regional_heading">🗺️ Regional Outbreak Analytics & Risk Matrix</span>
+          </div>
+          <div style="font-size:0.85rem; color:#757575;">
+            <span class="badge" style="background:#e8f5e9; color:#1b5e20;">Phase 3 Regional Surveillance</span>
+          </div>
+        </div>
+
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.25rem;" data-i18n="regional_disclaimer">
+          Simulated Decision-Support Data: Not real-world epidemiological confirmation. Aggregates microclimate anomalies, cluster patterns, and expert turnaround times across farming sectors.
+        </p>
+
+        <!-- Active Alerts Banner / Container -->
+        <div id="regional-alerts-container" style="margin-bottom:1.5rem;"></div>
+
+        <!-- Filter Controls -->
+        <div style="background:#f4fbf4; border:1px solid #c8e6c9; border-radius:8px; padding:1rem; margin-bottom:1.5rem;">
+          <h4 style="color:#1b5e20; margin-bottom:0.75rem; font-size:0.92rem;">Filter Regional Surveillance:</h4>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:0.75rem; align-items:flex-end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:0.8rem;" data-i18n="field_crop">Crop:</label>
+              <select id="filter-reg-crop" class="form-control" style="font-size:0.82rem; padding:0.35rem;">
+                <option value="" data-i18n="filter_all_crops">All Crops</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Rice">Rice / Paddy</option>
+                <option value="Potato">Potato</option>
+                <option value="Maize">Maize / Corn</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Cassava">Cassava</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:0.8rem;" data-i18n="field_location">Region / Sector:</label>
+              <select id="filter-reg-region" class="form-control" style="font-size:0.82rem; padding:0.35rem;">
+                <option value="" data-i18n="filter_all_regions">All Regions</option>
+                <option value="Delta Paddy Belt">Delta Paddy Belt</option>
+                <option value="Green Valley">Green Valley</option>
+                <option value="Highland Agricultural Block">Highland Block</option>
+                <option value="Eastern Dryland">Eastern Dryland</option>
+                <option value="Riverside Agro Zone">Riverside Agro</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:0.8rem;" data-i18n="field_severity">Severity:</label>
+              <select id="filter-reg-severity" class="form-control" style="font-size:0.82rem; padding:0.35rem;">
+                <option value="" data-i18n="filter_all_severities">All Severities</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Severe">Severe</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:0.8rem;">Priority:</label>
+              <select id="filter-reg-priority" class="form-control" style="font-size:0.82rem; padding:0.35rem;">
+                <option value="" data-i18n="filter_all_priorities">All Priorities</option>
+                <option value="High">High (Urgent)</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" style="font-size:0.8rem;">Status:</label>
+              <select id="filter-reg-status" class="form-control" style="font-size:0.82rem; padding:0.35rem;">
+                <option value="" data-i18n="filter_all_statuses">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Under Review">Under Review</option>
+                <option value="More Information Required">More Info Required</option>
+                <option value="Expert Validated">Expert Validated</option>
+              </select>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button id="btn-apply-reg-filter" class="btn btn-primary" style="font-size:0.82rem; padding:0.4rem 0.75rem;" data-i18n="filter_apply">Filter Data</button>
+              <button id="btn-reset-reg-filter" class="btn btn-outline" style="font-size:0.82rem; padding:0.4rem 0.6rem;">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regional Risk Matrix Table -->
+        <h4 style="color:#1b5e20; margin-bottom:0.75rem;">Regional Cluster Risk Matrix</h4>
+        <div style="overflow-x:auto; margin-bottom:2rem;">
+          <table class="table" style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:#f1f8e9; color:#1b5e20;">
+                <th style="padding:10px 12px; text-align:left;" data-i18n="col_region">Region / Sector</th>
+                <th style="padding:10px 12px; text-align:center;" data-i18n="col_total_cases">Total Cases</th>
+                <th style="padding:10px 12px; text-align:center;" data-i18n="col_high_prio">High Priority</th>
+                <th style="padding:10px 12px; text-align:left;" data-i18n="col_dominant_disease">Dominant Pattern</th>
+                <th style="padding:10px 12px; text-align:center;" data-i18n="col_moisture_risk">Moisture Risk</th>
+                <th style="padding:10px 12px; text-align:left;">Associated Crops</th>
+                <th style="padding:10px 12px; text-align:left;" data-i18n="col_risk_level">Outbreak Watch Level</th>
+              </tr>
+            </thead>
+            <tbody id="regional-matrix-tbody">
+              <tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#757575;">Loading regional surveillance data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- T_review Latency Analysis Panel -->
+        <h4 style="color:#1b5e20; margin-bottom:0.75rem;" data-i18n="t_review_card_title">⏱️ T_review Operational Latency Analysis</h4>
+        <div id="treview-stats-container" style="margin-bottom:2rem;">
+          <p style="color:#757575; font-style:italic;">Loading latency metrics...</p>
+        </div>
+
+        <!-- AI Performance Monitoring & Calibration Panel -->
+        <h4 style="color:#1b5e20; margin-bottom:0.75rem;" data-i18n="ai_monitoring_card_title">🤖 AI Performance Monitoring & Calibration</h4>
+        <div id="ai-monitoring-container">
+          <p style="color:#757575; font-style:italic;">Loading AI performance data...</p>
+        </div>
+
+        <!-- Privacy & Scientific Transparency Notice -->
+        <div class="alert alert-info" style="margin-top:1.5rem; font-size:0.85rem;" data-i18n="location_privacy_notice">
+          <strong>🔒 Location Privacy Protection Active:</strong> GPS coordinates are obfuscated and approximate to protect farmer privacy. Exact farmstead coordinates are never stored. Prototype evaluation — not field validation.
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Detail Modal -->
@@ -751,7 +903,7 @@
   <footer>
     <div style="max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
       <div>
-        <strong>Agri-Disease Observation & Expert Escalation System</strong> — Phase 2 Hybrid ML & Offline System (~70% Scope).
+        <strong>Agri-Disease Observation & Expert Escalation System</strong> — Complete End-to-End System (Phase 1 + 2 + 3).
       </div>
       <div>
         <small style="color:#757575;">Prototype/simulated evaluation — not field validation. No PII collected.</small>
@@ -760,11 +912,15 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="/js/i18n/translations.js"></script>
+  <script src="/js/i18n/i18n.js"></script>
+  <script src="/js/voice_assistant.js"></script>
   <script src="/js/offline_sync.js"></script>
   <script src="/js/farmer_wizard.js"></script>
   <script src="/js/farmer_track.js"></script>
   <script src="/js/officer_dashboard.js"></script>
   <script src="/js/expert_station.js"></script>
+  <script src="/js/regional_analytics.js"></script>
   <script src="/js/edge_cases.js"></script>
   <script src="/js/app.js"></script>
 </body>

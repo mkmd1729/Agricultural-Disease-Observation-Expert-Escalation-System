@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ExpertStation.fetchPendingCases();
       } else if (targetView === "view-track") {
         if (typeof FarmerTrack !== "undefined") FarmerTrack.checkUrlCaseId();
+      } else if (targetView === "view-regional") {
+        if (typeof RegionalAnalytics !== "undefined") RegionalAnalytics.refreshAll();
       }
     });
   });
@@ -35,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof OfficerDashboard !== "undefined") OfficerDashboard.init();
   if (typeof ExpertStation !== "undefined") ExpertStation.init();
   if (typeof FarmerTrack !== "undefined") FarmerTrack.init();
+  if (typeof RegionalAnalytics !== "undefined") RegionalAnalytics.init();
 
   // Reset Demo Data Button
   const resetBtn = document.getElementById("btn-reset-demo");
