@@ -1,28 +1,37 @@
 # System Architecture Specification
+## Agricultural Disease Observation & Expert Escalation System
 
-**Project:** Agricultural Disease Observation & Expert Escalation System  
-**Stage:** Phase 2 Complete (~70% Scope: Hybrid Vision ML, Offline Workflow, Environmental Context & Case Tracking)  
+**Stage:** Phase 3 Complete (100% End-to-End System)  
+**Scope:** Standardized Observation, MobileNetV3 Transfer Learning, Hybrid Decision Support, Environmental Context, Offline PWA, Case Tracking, Regional Surveillance, Multilingual i18n, Web Speech Accessibility, and Production Security.
 
 ---
 
 ## 1. Architectural Overview
 
-The system provides a robust, privacy-preserving vertical slice connecting smallholder farmers, agricultural extension officers, and expert plant pathologists. In Phase 2, the architecture expands from the Phase 1 heuristic foundation to include:
-1. **Real Computer Vision Model:** MobileNetV3-Small transfer learning running on-device or server CPU for foliar pathology classification.
-2. **Hybrid Decision Support Layer:** Fuses computer vision probabilities with structured agronomic symptoms, growth stage vulnerabilities, and environmental stress signals.
-3. **Environmental & Microclimate Context:** Captures recent rainfall, humidity, soil moisture/waterlogging, irrigation method, and field drainage to refine triage urgency.
-4. **Offline-First Resilience:** Progressive Web App shell cached via Service Worker, with IndexedDB offline queueing, automatic reconnection detection, retry handling, and duplicate submission prevention.
-5. **Farmer Case Tracking & Resubmission:** Transparent inquiry tracking allowing farmers to query case progress and resubmit clarifications or supplemental photos upon expert request.
-6. **Authoritative Expert Governance:** Strict system invariant ensuring that agricultural agronomists hold exclusive diagnostic authority. All ML predictions are presented as preliminary non-diagnostic hypotheses.
+The Agricultural Disease Observation & Expert Escalation System connects smallholder farmers, agricultural extension officers, and expert plant pathologists into a coordinated, closed-loop decision support network. The architecture provides:
+
+1. **Standardized Observation & Photographic Quality Engine:** Structured 5-step wizard with real-time OpenCV blur (Laplacian variance), exposure (mean luminance), and vegetative coverage analysis with actionable farmer advice.
+2. **Real Computer Vision Service:** MobileNetV3-Small transfer learning running on CPU, classifying foliar conditions into five core classes (Healthy, Fungal, Bacterial, Viral, Abiotic) with zero cross-split data leakage.
+3. **Hybrid Decision Support Engine:** Combines visual classification probabilities ($w_{\text{vis}} = 0.55$) with structured symptom checklists ($w_{\text{sym}} = 0.45$), crop growth stage vulnerability, and microclimate context to generate calibrated preliminary hypotheses.
+4. **Environmental & Microclimate Context:** Captures recent rainfall, humidity, soil moisture, irrigation type, and weather events to resolve diagnostic paradoxes (e.g. drought vs waterlogging wilt).
+5. **Authoritative Human-in-the-Loop Expert Governance:** Plant pathologists retain exclusive diagnostic authority. Expert overrides unconditionally supersede AI hypotheses while preserving immutable audit logs.
+6. **Offline-First PWA:** Service worker cached application shell, IndexedDB queue storage (`AgriOfflineDB`), idempotent sync tracking, and network status state machines.
+7. **Farmer Case Tracking & Resubmission Loop:** Transparent case status tracking and clarification workflow allowing farmers to answer expert inquiries and upload follow-up photos.
+8. **Multilingual Internationalization (English & Tamil):** Centralized 135-token translation dictionary with strict key parity and input preservation across language switches.
+9. **Web Speech Voice Accessibility:** Text-to-Speech (TTS) and Speech-to-Text (STT) dictation in Tamil (`ta-IN`) and Indian English (`en-IN`) with transparent fallbacks.
+10. **Regional Outbreak Analytics & $T_{review}$ Monitoring:** Spatial clustering, risk matrix generation, outbreak alerts, operational latency tracking ($T_{review}$), and live AI confidence monitoring.
+11. **Production Security Safeguards:** 10 MB file size limit, extension whitelisting, path traversal sanitization, and approximate coordinate rounding ($\le 2$ decimals).
 
 ---
 
-## 2. System Architecture Diagram
+## 2. Comprehensive System Architecture Diagram
 
 ```
 +---------------------------------------------------------------------------------------------------------+
 |                                         FARMER INTERFACE (PWA)                                          |
-|  - 5-Step Intuitive Reporting Wizard (Large Cards, Visual Guidance, Audio-free Touch Interface)        |
+|  - 5-Step Intuitive Reporting Wizard (Touch-first, Photographic Guidance)                               |
+|  - Multilingual Switcher: English (en) / Tamil (ta) with Form Input Preservation                        |
+|  - Web Speech Voice Assistant: TTS Read Aloud & STT Dictation (ta-IN / en-IN)                            |
 |  - Case Tracking & Resubmission Station (Status Stepper, Clarification Upload, Expert Notes)           |
 |  - Service Worker Cache (sw.js) for Offline Shell & Asset Persistence                                  |
 |  - Client-Side IndexedDB Storage (AgriOfflineDB: drafts & queued observations)                         |
@@ -38,106 +47,69 @@ The system provides a robust, privacy-preserving vertical slice connecting small
 |   |   Image Quality Engine   |    |  MobileNetV3 Vision Svc  |    |  Hybrid Decision Support Engine  |  |
 |   |  - Laplacian Variance    |    |  - MobileNetV3-Small     |    |  - Concordance Reinforcement     |  |
 |   |  - Exposure Bounds       |--->|  - Raw Logits & Softmax  |--->|  - Conflict Penalty (<60%)       |  |
-|   |  - Vegetation Ratio      |    |  - 5 Foliar Classes      |    |  - Image Quality Modulators      |  |
-|   |  - Duplicate dHash       |    |  - ~10.5 ms CPU Latency  |    |  - "Preliminary Hypothesis" Only |  |
+|   |  - Vegetation Ratio      |    |  - 5 Foliar Classes      |    |  - Environmental Modulation      |  |
+|   |  - Security & 10MB Limit |    |  - Zero Data Leakage     |    |  - "Preliminary Hypothesis" Only |  |
 |   +--------------------------+    +--------------------------+    +----------------------------------+  |
 |                                                                                   |                     |
 |                                                                                   v                     |
 |   +----------------------------------------------------------+    +----------------------------------+  |
-|   |               SQLite Relational Data Layer               |    |     Priority Scoring Engine      |  |
+|   |                Relational Persistence Layer              |    |     Priority Scoring Engine      |  |
 |   |  - cases (Symptoms, Stage, Environmental Context, Prio)  |<---|  - Symptom Severity              |  |
-|   |  - image_records (Paths, Quality Scores, Warnings)       |    |  - Crop Stage Vulnerability      |  |
-|   |  - expert_reviews (Diagnosis, Urgency, Resubmission Req) |    |  - Low Confidence Escalation     |  |
+|   |  - images (Sanitized Paths, Quality Scores, Advice)      |    |  - Crop Stage Vulnerability      |  |
+|   |  - expert_reviews (Diagnosis, Urgency, Status)           |    |  - Low Confidence Escalation     |  |
 |   |  - audit_logs (Immutable audit trail of transitions)     |    |  - Microclimate Stress Factor    |  |
 |   +----------------------------------------------------------+    +----------------------------------+  |
 +---------------------------------------------------------------------------------------------------------+
-                                 |                                                 |
-                                 v                                                 v
-+------------------------------------------------+ +-----------------------------------------------------+
-|          EXTENSION OFFICER DASHBOARD           | |            EXPERT VALIDATION WORKSTATION            |
-|  - Multi-Criteria Triage Queue                 | |  - Unified 3-Column Inspection:                     |
-|  - Real-time Priority Sorting (High/Med/Low)   | |      1. Field Evidence & Growth Stage               |
-|  - T_review Comparative KPI Tracking           | |      2. Environmental & Microclimate Stress Context |
-|  - Geographic & Crop Breakdown Charts          | |      3. Hybrid Vision Hypothesis vs Visual Images   |
-|  - Low-Confidence Filter (<60% Escalations)    | |  - Authoritative Action: Confirm / Override / Info  |
-+------------------------------------------------+ +-----------------------------------------------------+
-                                 \                                                 /
-                                  v                                               v
-+---------------------------------------------------------------------------------------------------------+
-|                                   METRICS & ERROR ANALYSIS ENGINE                                       |
-|  - Empirical T_review: timestamp(expert review) - timestamp(first symptom reported)                     |
-|  - MobileNetV3 Benchmark Metrics: Accuracy, Precision, Recall, Macro F1, Weighted F1, Confusion Matrix  |
-|  - Transparent Attribution: Baseline Assumptions (120h) vs Targets (24h) vs Measured Prototype Results  |
-+---------------------------------------------------------------------------------------------------------+
+        |                                        |                                        |
+        v                                        v                                        v
++-----------------------+      +-----------------------------------+      +-------------------------------+
+|   OFFICER DASHBOARD   |      |   REGIONAL OUTBREAK ANALYTICS     |      |       EXPERT WORKSTATION      |
+| - Multi-Criteria      |      | - Cluster Risk Matrix             |      | - 3-Column Case Inspection    |
+|   Triage Filter       |      | - Spatial Moisture Risk           |      | - Visual vs Symptom Review    |
+| - Real-Time Priority  |      | - Outbreak Watch Alert Badges     |      | - Authoritative Override      |
+|   Sorting             |      | - Granular T_review Breakdown     |      | - Request More Information    |
+| - KPI Summary Cards   |      | - AI Confidence Histogram         |      | - Agronomic Treatment Advice  |
++-----------------------+      +-----------------------------------+      +-------------------------------+
 ```
 
 ---
 
-## 3. Mermaid Sequence Diagram: Hybrid Decision & Escalation Flow
+## 3. Component Interaction Sequence
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Farmer as Farmer (Field)
-    participant Client as Web App / PWA
-    participant SW as Service Worker & DB
+    actor Farmer as Farmer / Field Agent
+    participant PWA as Offline PWA Client
     participant API as FastAPI Backend
-    participant Vision as MobileNetV3 Service
-    participant Triage as Priority Engine
-    participant DB as SQLite Database
+    participant QC as OpenCV Quality Engine
+    participant ML as MobileNetV3 + Hybrid
+    participant DB as SQLite / PostgreSQL
+    actor Officer as Extension Officer
     actor Expert as Plant Pathologist
 
-    Farmer->>Client: Selects crop, symptoms & uploads leaf photo
-    alt Device is Offline
-        Client->>SW: Store observation in IndexedDB Queue (AgriOfflineDB)
-        SW-->>Client: Return local queue ID (OFFLINE-...)
-        Client-->>Farmer: Display "Saved Locally (Offline Queue)"
-        Note over Farmer,Client: Network connectivity restored later
-        Client->>API: Auto-sync observation (POST /api/cases/json)
-    else Device is Online
-        Client->>API: POST /api/cases (Multipart Form)
-    end
-
-    API->>API: Evaluate Image Quality (Laplacian sharpness, Exposure)
-    API->>Vision: Forward leaf bytes to MobileNetV3-Small
-    Vision-->>API: Raw logits -> Softmax -> Category & Probabilities
-    API->>API: Run Hybrid Fusion (Vision + Symptoms + Crop Stage)
-    alt Confidence < 60% OR Evidence Conflict
-        API->>Triage: Force Priority = "High" (<60% Low-Confidence Safety Rule)
-    else High Concordance
-        API->>Triage: Calculate Multi-Factor Score (Severity + Stage + Weather)
-    end
-    Triage-->>API: (Priority Level, Explanatory Rationale)
-    API->>DB: Persist Case, Images, and Audit Log
-
-    Expert->>API: GET /api/cases (Inspect Triage Queue)
-    API-->>Expert: Unified Evidence (Photos, Quality, ML Hypothesis, Weather)
-    
-    alt Expert Validates
-        Expert->>API: POST /api/cases/{id}/review (Confirm or Override)
-        API->>DB: Record Expert Review & Mark Status "Expert Validated"
-    else Expert Requires More Information
-        Expert->>API: POST /api/cases/{id}/review (status: more_info_needed)
-        API->>DB: Mark Status "More Information Required"
-        Farmer->>Client: Enters Case ID on Track Case tab
-        Client->>API: GET /api/cases/{id}
-        Client-->>Farmer: Displays Expert Question & Resubmission Form
-        Farmer->>API: POST /api/cases/{id}/resubmit (Notes + New Photo)
-        API->>DB: Update Case to "Under Review" & Append Audit Trail
-    end
+    Farmer->>PWA: Enter crop, symptoms, stage, microclimate
+    Farmer->>PWA: Upload photo evidence
+    PWA->>QC: Check blur, exposure, vegetation
+    QC-->>PWA: Quality Score & Actionable Advice
+    Farmer->>PWA: Submit Observation (Online or Offline Queue)
+    PWA->>API: POST /api/cases (Validated, Coordinates Rounded to 2 Decimals)
+    API->>ML: MobileNetV3 visual inference + hybrid rules
+    ML-->>API: Preliminary Hypothesis (Confidence %)
+    API->>DB: Persist Case & assign Priority
+    Officer->>API: GET /api/analytics/regional (Surveillance Matrix)
+    Expert->>API: GET /api/cases?priority=High
+    Expert->>API: POST /api/cases/{id}/review (Authoritative Diagnosis)
+    API->>DB: Update authoritative status -> Expert Validated; Record T_review
+    Farmer->>PWA: Track Case / Resubmit -> View Expert Instructions
 ```
 
 ---
 
-## 4. Architectural Boundaries and Component Responsibilities
+## 4. Key Architectural Invariants
 
-| Component | Technology | Primary Responsibility | Strict Boundary / Constraint |
-| :--- | :--- | :--- | :--- |
-| **Frontend Shell** | HTML5, CSS3, ES6 JavaScript | Farmer reporting, case tracking, officer triage, expert workstation | No frameworks required; runs in low-end mobile browsers. Zero PII collected. |
-| **Offline Worker** | Service Worker API, IndexedDB | Shell asset caching, offline drafting, resilient background sync | Idempotent sync tracking; never silently discards unsynced observations. |
-| **API Gateway** | FastAPI, Pydantic v2, Uvicorn | RESTful endpoints, request validation, serialization | Stateless; exposes clean OpenAPI 3.1 documentation. |
-| **Vision Model** | PyTorch, MobileNetV3-Small | Single-image foliar pathology category probabilities | Raw logits during training; Softmax strictly at inference. CPU optimized (~10.5 ms). |
-| **Hybrid Assistant** | Rule-Heuristic + ML Blending | Decision-support candidate hypothesis & calibrated confidence | Never presents diagnostic certainty. Confidence < 60% forces safety escalation. |
-| **Priority Engine** | Deterministic Multi-Factor Rule Engine | Assigns High / Medium / Low triage queue priority | Triage priority only; never alters agronomic diagnosis. |
-| **Database** | SQLite, SQLAlchemy 2.0 ORM | Relational case data, audit trails, reviews, image metadata | Schema additions implemented via non-destructive migrations. |
-| **Image Storage** | Local filesystem (`data/uploads`) | Preserves uploaded photographs with privacy stripping | Metadata stripped; non-identifiable CC-BY-4.0 license applied. |
+1. **Non-Negotiable Expert Authority:** The AI model is an advisory assistant; the human expert decision is authoritative and final.
+2. **Mandatory Low-Confidence Escalation:** Observations with AI confidence $< 60.0\%$ automatically escalate to `High Priority` triage.
+3. **Location Privacy Preservation:** GPS coordinates are rounded to at most 2 decimal places ($\approx 1.1\text{ km}$ area precision).
+4. **Zero Data Leakage:** Source images are deterministically partitioned before augmentation.
+5. **Multilingual Key Parity:** English and Tamil dictionaries maintain 100% token parity.

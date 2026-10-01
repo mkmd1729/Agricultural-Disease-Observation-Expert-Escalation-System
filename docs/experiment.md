@@ -94,8 +94,8 @@ To run the complete automated evaluation suite:
 # 1. Evaluate MobileNetV3-Small test split and database cases
 python ml/evaluate.py
 
-# 2. Run the 40 automated pytest unit & integration tests
-python -m pytest
+# 2. Run the 57 automated pytest unit, integration & security tests
+pytest
 
 # 3. Run the 15-point end-to-end acceptance test matrix
 python scripts/run_acceptance_tests.py

@@ -162,3 +162,155 @@ In Phase 2.4, the client runs a local IndexedDB schema for offline resilience:
 
 ## 4. Migration Strategy
 All Phase 2 schema modifications were applied using non-destructive SQLite migrations (`ALTER TABLE cases ADD COLUMN ...`) executed automatically inside `init_db()`. Existing Phase 1 records remain 100% intact.
+
+---
+
+## 5. Phase 3 Analytical, Internationalization & Security Schemas
+
+### 5.1 Security & File Upload Constraints
+* **Uploads Directory:** Files stored on filesystem under `/uploads/` using randomized filenames: `{case_id}_{image_type}_{uuid}.{ext}`.
+* **Maximum File Size:** 10 MB (`10,485,760 bytes`). Files exceeding this trigger `HTTP 413 Content Too Large`.
+* **Extension Whitelist:** `.jpg`, `.jpeg`, `.png`, `.webp`. Disallowed extensions trigger `HTTP 400 Bad Request`.
+* **Path Traversal Guard:** `Path(filename).name` sanitization removes directory traversal sequences (`../`).
+* **Spatial Truncation:** `latitude` and `longitude` are rounded to 2 decimal places ($\approx 1.1\text{ km}$ precision) before storage to prevent farmstead deanonymization.
+
+### 5.2 Regional Outbreak Analytics (`GET /api/analytics/regional`)
+```json
+{
+  "disclaimer": "Prototype / simulated regional summary for decision support — not real-world disease outbreak surveillance.",
+  "filters_applied": {
+    "crop": "Tomato",
+    "region": null,
+    "severity": null,
+    "priority": null,
+    "status": null
+  },
+  "total_matching_cases": 14,
+  "total_regions": 3,
+  "active_alerts_count": 1,
+  "active_alerts": [
+    {
+      "region": "Delta Paddy Belt Sector B",
+      "risk_level": "Elevated Watch",
+      "high_priority_count": 3,
+      "total_cases": 6,
+      "dominant_disease": "Fungal leaf blight",
+      "message": "Cluster notification: 3 high-priority case(s) detected in Delta Paddy Belt Sector B...",
+      "recommended_action": "Deploy extension field officer for in-person sample collection.",
+      "disclaimer": "Simulated regional alert — prototype decision support."
+    }
+  ],
+  "regions": [
+    {
+      "region_name": "Delta Paddy Belt Sector B",
+      "approx_latitude": 10.82,
+      "approx_longitude": 79.20,
+      "total_cases": 6,
+      "high_priority_count": 3,
+      "validated_count": 2,
+      "under_review_count": 3,
+      "needing_info_count": 1,
+      "dominant_disease": "Fungal leaf blight",
+      "moisture_risk_count": 4,
+      "risk_level": "Elevated Watch",
+      "badge_class": "warning",
+      "crops": ["Tomato"]
+    }
+  ]
+}
+```
+
+### 5.3 Operational Latency ($T_{review}$) Schema (`GET /api/analytics/t-review`)
+```json
+{
+  "disclaimer": "Simulated latency measured across prototype database records — illustrative operational metrics.",
+  "baseline_assumption_hours": 120.0,
+  "mvp_target_hours": 24.0,
+  "total_validated_cases": 8,
+  "overall_t_review": {
+    "count": 8,
+    "mean": 18.5,
+    "median": 16.2,
+    "min": 4.5,
+    "max": 36.0
+  },
+  "overall_submission_to_review": {
+    "count": 8,
+    "mean": 12.1,
+    "median": 10.5,
+    "min": 2.0,
+    "max": 22.0
+  },
+  "by_priority": {
+    "High": {"count": 4, "mean": 8.2, "median": 7.5, "min": 4.5, "max": 14.0},
+    "Medium": {"count": 3, "mean": 24.0, "median": 22.0, "min": 18.0, "max": 32.0},
+    "Low": {"count": 1, "mean": 36.0, "median": 36.0, "min": 36.0, "max": 36.0}
+  },
+  "by_crop": {
+    "Tomato": {"count": 4, "mean": 14.2, "median": 12.0}
+  },
+  "by_region": {
+    "Delta Paddy Belt Sector B": {"count": 5, "mean": 15.0, "median": 14.0}
+  }
+}
+```
+
+### 5.4 AI Performance Monitoring Schema (`GET /api/analytics/ai-monitoring`)
+```json
+{
+  "disclaimer": "AI metrics reflect prototype decision-support performance and simulated triage. Expert review remains authoritative.",
+  "total_cases_evaluated": 12,
+  "cases_with_ai_confidence": 12,
+  "confidence_distribution_buckets": {
+    "<50%": 2,
+    "50-59%": 4,
+    "60-69%": 2,
+    "70-79%": 2,
+    "80-89%": 2,
+    "90-100%": 0
+  },
+  "low_confidence_threshold": 60.0,
+  "low_confidence_cases": 6,
+  "escalation_rate_percent": 50.0,
+  "expert_review_metrics": {
+    "total_reviews": 8,
+    "confirmed_ai_agreements": 5,
+    "expert_overrides_rejections": 2,
+    "more_information_requests": 1,
+    "uncertain_reviews": 0,
+    "agreement_rate_percent": 62.5,
+    "override_rate_percent": 25.0
+  },
+  "model_benchmark": {
+    "evaluation_type": "Phase 2.1 Held-Out Test Evaluation",
+    "dataset_type": "prototype_benchmark_synthetic",
+    "model_architecture": "MobileNetV3-Small",
+    "total_test_samples": 15,
+    "overall_accuracy": 100.0,
+    "macro_f1": 100.0,
+    "weighted_f1": 100.0
+  }
+}
+```
+
+### 5.5 Multilingual Internationalization Schemas
+* **`GET /api/i18n/languages`:**
+```json
+[
+  {"code": "en", "name": "English", "nativeName": "English"},
+  {"code": "ta", "name": "Tamil", "nativeName": "தமிழ்"}
+]
+```
+* **`GET /api/i18n/{lang}`:**
+```json
+{
+  "app_title": "string",
+  "nav_farmer": "string",
+  "nav_tracking": "string",
+  "nav_officer": "string",
+  "nav_expert": "string",
+  "nav_regional": "string",
+  "... 135 total key-value translation tokens with 100% parity across en and ta ...": "string"
+}
+```
+
